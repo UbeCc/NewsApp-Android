@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">烽火快讯</string>
+    <string name="title_recommend">每日推荐</string>
+    <string name="title_newslist">新闻列表</string>
+    <string name="title_profile">个人信息</string>
+    <string name="imageview_placeholder">ImageView placeholder</string>
+
+</resources>
