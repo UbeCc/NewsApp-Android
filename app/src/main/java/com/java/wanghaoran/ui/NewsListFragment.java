@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -14,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.Containers.News;
+import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
 import com.java.wanghaoran.service.TaskRunner;
 
@@ -38,6 +40,11 @@ public class NewsListFragment extends Fragment {
     private ConstraintLayout mainArea;
     private float mPosX, mPosY, mCurPosX, mCurPosY;
     private int page  = 1;
+
+
+
+
+
 
 
     @Override
@@ -64,7 +71,7 @@ public class NewsListFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(llm);
 
-        EndlessRecycleViewScrollListener listScrollListener = new EndlessRecycleViewScrollListener(llm, (page, totalItemsCount, view1) -> loadNextPage());
+        listScrollListener = new EndlessRecycleViewScrollListener(llm, (page, totalItemsCount, view1) -> loadNextPage());
         recyclerView.addOnScrollListener(listScrollListener);
 
         listAdapter = new NewsListAdapter(this, context, newsList);
@@ -72,7 +79,6 @@ public class NewsListFragment extends Fragment {
 
         loadingBar = view.findViewById(R.id.loading_bar);
         loadingBar.setVisibility(View.VISIBLE);
-
 
         reloadNews();
 
@@ -92,25 +98,25 @@ public class NewsListFragment extends Fragment {
     public void reloadNews() {//这个函数来自2022年科协暑培的代码
         page = 1;
         if(listScrollListener == null)return;
-        Log.d("NewsListFragment","reloadNews()");
+        Log.d("NewsList","reloadNews()");
         listScrollListener.resetState();
         NewsManager.getInstance().newsList(0, PAGE_SIZE, new NewsFetchCallback(true));
     }
 
     public class NewsFetchCallback implements TaskRunner.Callback<List<News>> {//这个函数来自2022年科协暑培的代码
         private final boolean reload;
-
         public NewsFetchCallback(boolean reload) {
             this.reload = reload;
         }//这个函数来自2022年科协暑培的代码
 
         @Override
         public void complete(TaskRunner.Result<List<News>> res) {//这个函数来自2022年科协暑培的代码
+            Log.d("NewsList", "complete executed " + reload + " " + res.isOk() + " " + res.getResult().toString());
             loadingBar.setVisibility(View.GONE);
             if (reload) {
                 listContainer.setRefreshing(false);
             }
-            if (res.getOk()) {
+            if (res.isOk()) {
                 if (reload) {
                     newsList.clear();
                 }

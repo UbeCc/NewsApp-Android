@@ -1,11 +1,15 @@
 package com.java.wanghaoran.service;
 
+
 import android.os.Handler;
 import android.os.Looper;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 public class TaskRunner {
 
@@ -14,20 +18,12 @@ public class TaskRunner {
         void complete(Result<R> res);
     }
 
+    @Data
+    @AllArgsConstructor
     public static class Result<R> {//这个函数来自2022年科协暑培的代码
         private boolean ok;
         private R result;
         private Throwable error;
-
-        public Result(boolean _ok, R _result, Throwable _error) {
-            boolean ok = _ok;
-            R result = _result;
-            Throwable error = _error;
-        }
-
-        public boolean getOk() {return ok;}
-        public R getResult() {return result;}
-        public Throwable getError() {return error;}
 
         public static <T> Result<T> ofResult(T res) {
             return new Result<>(true, res, null);
@@ -59,6 +55,7 @@ public class TaskRunner {
                 final R res = task.call();
                 uiThread.post(() -> callback.complete(Result.ofResult(res)));
             } catch (Exception e) {
+                e.printStackTrace();
                 uiThread.post(() -> callback.complete(Result.ofError(e)));
             }
         });

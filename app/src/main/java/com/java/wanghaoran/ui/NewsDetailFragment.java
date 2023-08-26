@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.Containers.News;
+import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
 import com.java.wanghaoran.service.PictureLoader;
 import com.java.wanghaoran.service.TaskRunner;
@@ -98,7 +98,7 @@ public class NewsDetailFragment extends Fragment {
         }else{
             news_image4.setVisibility(View.GONE);
         }
-        if(newsToShow.getVideo().length != 0){
+        if(newsToShow.getVideo().length >= 1){
             String path = newsToShow.getVideo()[0];
             VideoFragment to_fill = VideoFragment.newInstance(path);
             getParentFragmentManager().beginTransaction().add(R.id.fragment_to_contain_video, to_fill).commit();
@@ -119,13 +119,12 @@ public class NewsDetailFragment extends Fragment {
     }
 
     private void handle_favorite_click(int i){
-        Toast.makeText(context,""+ i,Toast.LENGTH_SHORT);
+        Toast.makeText(context,""+ i, Toast.LENGTH_SHORT);
         if(i == 1){
             NewsManager.getInstance().favorite_trigerred(news_id,true);
             button2.setVisibility(View.VISIBLE);
             button1.setVisibility(View.GONE);
         }else{
-            //newsToShow.setFavorites(false);
             NewsManager.getInstance().favorite_trigerred(news_id,false);
             button1.setVisibility(View.VISIBLE);
             button2.setVisibility(View.GONE);

@@ -14,8 +14,8 @@ import android.widget.GridView;
 
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.Containers.User;
-import com.java.wanghaoran.Containers.Keywords;
+import com.java.wanghaoran.containers.User;
+import com.java.wanghaoran.containers.Keywords;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,10 +95,10 @@ public class SelectPaddleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        try{if(MainApplication.myUser.selected == null) Log.d("Logger", "is null");}
-        catch(Exception e) {Log.d("Logger", e.toString());}
-        Log.d("Logger", "onCreateView");
-        Log.d("Logger", "null?");
+//        try{if(MainApplication.myUser == null) Log.d("Logger", "QWQ is null");}
+//        catch(Exception e) {Log.d("Logger", e.toString());}
+//        Log.d("Logger", "onCreateView");
+//        Log.d("Logger", "null?");
         if (MainApplication.myUser.selected != null && MainApplication.myUser.unselected != null) {
             selected.add(Keywords.教育);
             selected.add(Keywords.娱乐);
@@ -114,7 +114,7 @@ public class SelectPaddleFragment extends Fragment {
             selected = MainApplication.myUser.selected;
             unselected = MainApplication.myUser.unselected;
         }
-        Log.d("Logger", "onCreateView2");
+//        Log.d("Logger", "onCreateView2");
         View view = inflater.inflate(R.layout.fragment_select_paddle, container, false);
         selected_grid_view = view.findViewById(R.id.selected);
         unselected_grid_view = view.findViewById(R.id.unselected);

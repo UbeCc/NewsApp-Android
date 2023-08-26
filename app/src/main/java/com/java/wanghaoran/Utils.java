@@ -1,7 +1,5 @@
 package com.java.wanghaoran;
 
-import android.provider.MediaStore;
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,19 +12,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.java.wanghaoran.R;
+import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.Containers.News;
 
+public final class Utils {
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import com.google.gson.Gson;
-
-public class Utils {
-
-    public Utils() {}
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
     public static void replaceFragment(Fragment fragment, Class<? extends Fragment> fragmentClass) {
@@ -46,8 +36,11 @@ public class Utils {
     }
 
     public static String[] readStringList(String stringGotFromAPI){
+        String ans[] = {};
+//        stringGotFromAPI = stringGotFromAPI.substring(1, stringGotFromAPI.length()-1);
+//        ans = stringGotFromAPI.split(",\\s");
+//        return ans;
 
-        String ans[] ={};
 
         if(stringGotFromAPI.length()>5&&stringGotFromAPI.indexOf("http") >= 0){
             if(stringGotFromAPI.charAt(0) == '['){
@@ -75,10 +68,8 @@ public class Utils {
         String images[] = Utils.readStringList(image_list);
         String videos[] = Utils.readStringList(video_list);
 
-        Containers myContainers = new Containers();
-        Containers.News a_piece_of_news = myContainers.new News(id, title, publisher, publishTime,
-                content,  images, videos, id_from_api, url,false, false);
-        return a_piece_of_news;
+        return new News(id, title, publisher, publishTime,
+                content,  images, videos,id_from_api, url,false, false);
     }
 
     public static News initNews(String title, String content, String url, String publisher,
@@ -88,10 +79,8 @@ public class Utils {
 
         String videos[] = Utils.readStringList(video_list);
 
-        Containers myContainers = new Containers();
-        Containers.News a_piece_of_news = myContainers.new News(id, title, publisher, publishTime,
-                content, image_list, videos, id_from_api, url,false, false);
-        return a_piece_of_news;
+        return new News(id, title, publisher, publishTime,
+                content,  image_list, videos,id_from_api, url,false, false);
     }
 
     public static boolean is_an_api_id_read(String id_from_API){
@@ -140,7 +129,6 @@ public class Utils {
             return new ArrayList<>();
         }
     }
-
 
 
 }

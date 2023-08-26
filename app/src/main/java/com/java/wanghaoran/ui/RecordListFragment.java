@@ -7,31 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.Containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.service.TaskRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecordListFragment extends Fragment {
     public static final int PAGE_SIZE = 10;
     public static final String LOG_TAG = RecordListFragment.class.getSimpleName();
 
-
     private RecyclerView recyclerView;
     private NewsListAdapter listAdapter;
-    private int mode = 0; // 0 for history, 1 for favorite;
-
+    private int mode = 0; // 0 for Like, 1 for History;
 
     private Context context;
 
@@ -44,16 +35,14 @@ public class RecordListFragment extends Fragment {
         Log.d("record list", "mode" + mode);
     }
 
-    public RecordListFragment() {
-
-    }
+    public RecordListFragment() {}
 
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_recordlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_actionlist, container, false);
         context = view.getContext();
         recyclerView = view.findViewById(R.id.news_list);
         LinearLayoutManager llm = new LinearLayoutManager(context);

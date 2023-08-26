@@ -3,9 +3,10 @@ package com.java.wanghaoran.service;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.java.wanghaoran.Containers.News;
-import com.java.wanghaoran.Containers.NewsResponse;
+import com.java.wanghaoran.containers.News;
+import com.java.wanghaoran.containers.NewsResponse;
 import com.java.wanghaoran.Utils;
+import com.java.wanghaoran.containers.NewsResponse2;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class FetchFromAPIManager {
+public final class FetchFromAPIManager {
     private final static FetchFromAPIManager instance = new FetchFromAPIManager();
     private static String dateOfToday;
     private static String start_time = "1970-01-01";
@@ -51,7 +52,7 @@ public class FetchFromAPIManager {
         String a = "https://api2.newsminer.net/svc/news/queryNewsList?size=10&startDate="+start_time+"&endDate="+end_time+"&words="+ keyWords +"&categories=" + catagories;
         String url = a+"&page="+page;
         //url = "https://api2.newsminer.net/svc/news/queryNewsList?words=%E8%99%9A%E6%8B%9F%E7%8E%B0%E5%AE%9E&size=20&startDate=2021-09-01&endDate=2021-09-02&model=withUrl&websites=%E6%96%B0%E5%8D%8E%E7%BD%91,%E4%BA%BA%E6%B0%91%E7%BD%91";
-        Log.d("Trying to get from ",url);
+        Log.d("Trying to get from ", url);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         try {
@@ -69,17 +70,16 @@ public class FetchFromAPIManager {
                         int k = data.size();
                         Log.d("FetchFromAPI", "length of message read = " + k);
                         for (int i = 0; i < k; i++) {
-
                             try {
                                 String title = data.get(i).title;
                                 String clear_title = title.split("\n|\r")[0];
-
                                 News temp_news = Utils.initNews(clear_title, data.get(i).content, data.get(i).url,
                                         data.get(i).publisher, data.get(i).publishTime, data.get(i).newsID,
                                         data.get(i).image, data.get(i).video);
 
                                 temp_read_news.add(temp_news);
                             } catch (Exception e) {
+                                Log.d("Logger", "Error " + e.toString());
                                 continue;
                             }
                         }
@@ -92,10 +92,10 @@ public class FetchFromAPIManager {
             } catch (Exception e) {
                 temp_read_news.clear();
                 Gson gson = new Gson();
-                NewsResponse newsResponse = gson.fromJson(responseBody, NewsResponse.class);
+                NewsResponse2 newsResponse = gson.fromJson(responseBody, NewsResponse2.class);
                 Log.d("FetchFromAPI", "(catch)Successfully get NewsResponse from " + url);
                 if (newsResponse != null) {
-                    List<NewsResponse.NewsContent> data = newsResponse.data;
+                    List<NewsResponse2.NewsContent> data = newsResponse.data;
                     if (!data.isEmpty()) {
                         temp_read_news.clear();
                         int k = data.size();
@@ -125,12 +125,13 @@ public class FetchFromAPIManager {
             }
         }  catch (Exception e){
             e.printStackTrace();
+            Log.d("NewsList", "Other Error" + e.toString());
         }
 
     }
     public List<News> getNews(int offset, int pageSize){
         run(offset/pageSize + 1);
-
+        Log.d("NewsList", "getNews() " + temp_read_news + (offset / pageSize + 1));
         return temp_read_news;
     }
 

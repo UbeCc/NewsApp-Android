@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <ImageView
+                android:id="@+id/item_other_head_img"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/profile_photo" />
+            <TextView
+                android:id="@+id/item_other_username_tx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/item_other_head_img"
+                android:text="username用户名"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:layout_toRightOf="@id/item_other_head_img"
+                android:layout_marginLeft="10dp"
+                android:text="2019年4月12日"
+                android:textColor="@color/black"
+                android:layout_below="@+id/item_other_username_tx"
+                android:id="@+id/item_other_time_tv"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/profile_photo"
+                android:id="@+id/item_other_review_acclaim_icon_iv"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="2dp"
+                android:tag="un_acclaim"
+                android:clickable="true"
+                android:focusable="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12345"
+                android:id="@+id/item_other_acclaim_num_tv"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="22dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+
+                />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/item_other_content_tx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="61dp"
+            android:layout_marginRight="32dp"
+            android:text="正文(超级加长版，增加字数，一二三四五六七sadsadsad八)sadj\nkashdkjash\ndjkhasdjkhuikhkjhjksajdkhsajkhjkhlkjkhjkhjkhjkhjkjkhjkhiumnbyjnmabvsdyuvsanvdytvsdahjv"
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/black"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="61dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

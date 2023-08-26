@@ -14,9 +14,9 @@ import android.widget.CheckBox;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.Tab;
 import com.java.wanghaoran.MainApplication;
-import com.java.wanghaoran.Containers.Keywords;
+import com.java.wanghaoran.containers.Keywords;
 import com.java.wanghaoran.R;
-//import com.java.lichenghao.newsrefactored.data.User;
+import com.java.wanghaoran.containers.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class TabListFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {} // TODO
         });
-//        update_list();
+        update_list();
         return view;
     }
 

@@ -108,5 +108,4 @@ public class EndlessRecycleViewScrollListener extends RecyclerView.OnScrollListe
         this.previousTotalItemCount = 0;
         this.loading = true;
     }
-
 }

@@ -9,8 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.Containers.Keywords;
+import com.java.wanghaoran.containers.Keywords;
 
 import java.util.List;
 import java.util.zip.Inflater;
@@ -20,6 +21,7 @@ public class SelectPaddleAdapter  extends BaseAdapter {
     private Context mContext;
     private boolean isSelected = false;
     private Interface mInterface;
+    private MainApplication mApplication;
 
     public SelectPaddleAdapter(Interface listener, List<Keywords> list_to_show, Context mContext){
         this.list_to_show = list_to_show;

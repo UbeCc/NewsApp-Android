@@ -18,37 +18,11 @@ public final class PictureLoader {
     private static PictureLoader instance = new PictureLoader();
 
     public static void loadPictureWithoutPlaceHolder(Context context, String url, ImageView picture) {
-        switch (url.hashCode() % 5){
-            case 0:
-                Glide.with(context).asBitmap().error(R.drawable.news).load(url).into(picture);break;
-            case 1:
-                Glide.with(context).asBitmap().error(R.drawable.news).load(url).into(picture);break;
-            case 2:
-                Glide.with(context).asBitmap().error(R.drawable.news).load(url).into(picture);break;
-            case 3:
-                Glide.with(context).asBitmap().error(R.drawable.news).load(url).into(picture);break;
-            default:
-                Glide.with(context).asBitmap().error(R.drawable.news).load(url).into(picture);break;
-        }
-        // Glide.with(context).asBitmap().error(R.drawable.loading).load(url).into(picture);break;
+        Glide.with(context).asBitmap().error(R.drawable.news_placeholder).load(url).into(picture);
     }
 
     public static void loadPictureWithPlaceHolder(Context context, String url, ImageView picture) {
-
-        Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).centerCrop().into(picture);
-        switch (url.hashCode() % 5){
-            case 0:
-                Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).into(picture);break;
-            case 1:
-                Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).into(picture);break;
-            case 2:
-                Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).into(picture);break;
-            case 3:
-                Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).into(picture);break;
-            default:
-                Glide.with(context).asBitmap().error(R.drawable.news).placeholder(R.drawable.loading).load(url).into(picture);break;
-        }
-
+        Glide.with(context).asBitmap().error(R.drawable.news_placeholder).placeholder(R.drawable.loading).load(url).into(picture);
     }
 
     public PictureLoader getInstance(){

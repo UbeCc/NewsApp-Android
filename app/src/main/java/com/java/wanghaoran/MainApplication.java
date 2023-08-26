@@ -7,53 +7,49 @@ import android.view.View;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.java.wanghaoran.Containers.User;
-import com.java.wanghaoran.Utils;
-import com.java.wanghaoran.Containers;
+import com.java.wanghaoran.containers.User;
+import com.java.wanghaoran.service.DBManager;
+import com.java.wanghaoran.service.MySQLiteOpenHelper;
+import com.java.wanghaoran.service.NewsManager;
 
-//        import com.java.lichenghao.newsrefactored.service.DBManager;
-//        import com.java.lichenghao.newsrefactored.service.MySQLiteOpenHelper;
-//        import com.java.lichenghao.newsrefactored.service.NewsManager;
+import lombok.Getter;
+import lombok.Setter;
 
 public class MainApplication extends Application {
     private static Context context;
     private static BottomNavigationView bottomNavigationView;
+    @Setter
+    @Getter
     private static FragmentContainerView topFragmentContainer;
     public static View NewsList = null;
-    public static User myUser;
-    static{myUser = new Containers().new User();}
+    public static User myUser ;
     public static boolean newsPage = true;
     public static boolean searchPage = false;
     public static boolean userPage = false;
     public static boolean newsPageisSearchingPage = false;
     //public static NewsManager newsManager;
-//    public static DBManager dbManager;
+    public static DBManager dbManager;
 
-    public static FragmentContainerView getTopFragmentContainer() {
-        return topFragmentContainer;
-    }
 
-    public static void setTopFragmentContainer(FragmentContainerView topFragmentContainer) {
-        MainApplication.topFragmentContainer = topFragmentContainer;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        MySQLiteOpenHelper mySQLiteOpenHelper;
-//        mySQLiteOpenHelper = new MySQLiteOpenHelper(this);
+        MySQLiteOpenHelper mySQLiteOpenHelper;
+        mySQLiteOpenHelper = new MySQLiteOpenHelper(this);
         context = getApplicationContext();
-        Containers myContainers = new Containers();
-        User myUser = myContainers.new User();
-//        new MySQLiteOpenHelper(context);
-//        dbManager = new DBManager();
+        //context = MainActivity.this;
+
+        myUser = new User();
+        new MySQLiteOpenHelper(context);
+        dbManager = new DBManager();
         // newsManager =  NewsManager.getInstance();
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
-//        DBManager.closeDB();
+        DBManager.closeDB();
     }
 
     public static void setNavView(BottomNavigationView b){

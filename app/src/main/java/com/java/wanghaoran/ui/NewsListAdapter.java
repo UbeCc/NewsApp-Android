@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
 import com.java.wanghaoran.Utils;
-import com.java.wanghaoran.Containers.News;
+import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
 import com.java.wanghaoran.service.PictureLoader;
 
@@ -111,7 +111,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
                 PictureLoader.loadPictureWithPlaceHolder(mainActivity, news.getImages()[1], picture2);
             }
             itemView.setOnClickListener(v -> {
-
                 long id = NewsManager.getInstance().createNews(news);
                 news.setId(id);
                 notifyItemChanged(position);

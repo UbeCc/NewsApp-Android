@@ -21,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/news_list_container"
         android:layout_width="match_parent"
@@ -37,7 +36,6 @@
             android:layout_weight="1" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <!--style="?android:attr/progressBarStyle"-->
 
     <ProgressBar
         android:id="@+id/loading_bar"

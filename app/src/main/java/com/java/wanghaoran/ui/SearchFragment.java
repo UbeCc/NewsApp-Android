@@ -87,7 +87,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         gridLayout = view.findViewById(R.id.selections);
         startTime = view.findViewById(R.id.editTextDateStart);
         endTime = view.findViewById(R.id.editTextDateEnd);
-        Log.d("Logger", view.findViewById(R.id.ssearch_button).getClass().toString());
+//        Log.d("Logger", view.findViewById(R.id.ssearch_button).getClass().toString());
         searchButton = view.findViewById(R.id.ssearch_button);
         searchView.setOnQueryTextListener(this);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
