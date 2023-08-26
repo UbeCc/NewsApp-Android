@@ -119,7 +119,6 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
 
     }
 
-
     private void replaceFragment(Class<? extends Fragment> fragmentClass) {//这个函数来自2022年科协暑培的代码
         getSupportFragmentManager()
                 .beginTransaction()
@@ -169,7 +168,6 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
         }
         return false;
     }
-
 
     @Override
     public void finished() {

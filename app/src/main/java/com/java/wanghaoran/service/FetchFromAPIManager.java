@@ -49,6 +49,7 @@ public final class FetchFromAPIManager {
 
 
     public void run(int page) {
+        Log.d("Result", keyWords + " " + start_time + " " + end_time);
         String a = "https://api2.newsminer.net/svc/news/queryNewsList?size=10&startDate="+start_time+"&endDate="+end_time+"&words="+ keyWords +"&categories=" + catagories;
         String url = a+"&page="+page;
         //url = "https://api2.newsminer.net/svc/news/queryNewsList?words=%E8%99%9A%E6%8B%9F%E7%8E%B0%E5%AE%9E&size=20&startDate=2021-09-01&endDate=2021-09-02&model=withUrl&websites=%E6%96%B0%E5%8D%8E%E7%BD%91,%E4%BA%BA%E6%B0%91%E7%BD%91";
@@ -72,6 +73,7 @@ public final class FetchFromAPIManager {
                         for (int i = 0; i < k; i++) {
                             try {
                                 String title = data.get(i).title;
+                                Log.d("Result", title);
                                 String clear_title = title.split("\n|\r")[0];
                                 News temp_news = Utils.initNews(clear_title, data.get(i).content, data.get(i).url,
                                         data.get(i).publisher, data.get(i).publishTime, data.get(i).newsID,

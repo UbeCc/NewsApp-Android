@@ -38,14 +38,10 @@ public class NewsListFragment extends Fragment {
     private ProgressBar loadingBar;
     private SwipeRefreshLayout listContainer;
     private ConstraintLayout mainArea;
-    private float mPosX, mPosY, mCurPosX, mCurPosY;
     private int page  = 1;
+    public static NewsListFragment newsListFragment = new NewsListFragment();
 
-
-
-
-
-
+    public static NewsListFragment getInstance() {return newsListFragment;}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,10 +54,6 @@ public class NewsListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_newslist, container, false);
         context = view.getContext();
-
-//        mainArea = view.findViewById(R.id.constraintlayout_area);
-//        mainArea.setLongClickable(true);
-//        setTouchListener(mainArea);
 
         listContainer = view.findViewById(R.id.news_list_container);
         listContainer.setOnRefreshListener(this::reloadNews);
@@ -87,7 +79,6 @@ public class NewsListFragment extends Fragment {
     }
 
 
-
     private void loadNextPage() {//这个函数来自2022年科协暑培的代码
         page += 1;
         Log.d("NewsListFragment","loadNextPage()" + page);
@@ -97,7 +88,7 @@ public class NewsListFragment extends Fragment {
 
     public void reloadNews() {//这个函数来自2022年科协暑培的代码
         page = 1;
-        if(listScrollListener == null)return;
+        if(listScrollListener == null) return;
         Log.d("NewsList","reloadNews()");
         listScrollListener.resetState();
         NewsManager.getInstance().newsList(0, PAGE_SIZE, new NewsFetchCallback(true));

@@ -13,31 +13,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsAppUbecWang"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true"-->
-<!--            android:label="@string/app_name">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--        <activity-->
-<!--            android:name=".LoginActivity"-->
-<!--            android:label="Login"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" /> &lt;!&ndash; 设置入口动作为 MAIN &ndash;&gt;-->
-<!--                <category android:name="android.intent.category.ACCESSIBILITY_SHORTCUT_TARGET" /> &lt;!&ndash; 设置入口类别为 LAUNCHER &ndash;&gt;-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" /> <!-- 设置入口动作为 MAIN -->
+                <category android:name="android.intent.category.ACCESSIBILITY_SHORTCUT_TARGET" /> <!-- 设置入口类别为 LAUNCHER -->
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AppActivity"
             android:label="App"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" /> <!-- 设置入口动作为 MAIN -->
-                <category android:name="android.intent.category.LAUNCHER" /> <!-- 设置入口类别为 LAUNCHER -->
+                <action android:name="android.intent.action.VIEW" /> <!-- 设置入口动作为 MAIN -->
+                <category android:name="android.intent.category.ACCESSIBILITY_SHORTCUT_TARGET" /> <!-- 设置入口类别为 LAUNCHER -->
             </intent-filter>
         </activity>
     </application>
