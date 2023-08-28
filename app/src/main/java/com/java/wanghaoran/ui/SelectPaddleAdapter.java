@@ -21,13 +21,13 @@ public class SelectPaddleAdapter  extends BaseAdapter {
     private boolean isSelected = false;
     private Interface mInterface;
 
-    public SelectPaddleAdapter(Interface listener, List<Keywords> list_to_show, Context mContext){
+    public SelectPaddleAdapter(Interface listener, List<Keywords> listToShow, Context mContext){
         this.listToShow = listToShow;
         this.mContext = mContext;
         this.mInterface = listener;
     }
-    public SelectPaddleAdapter(Interface listener, List<Keywords> list_to_show, Context mContext, boolean isSelected){
-        this.listToShow = list_to_show;
+    public SelectPaddleAdapter(Interface listener, List<Keywords> listToShow, Context mContext, boolean isSelected){
+        this.listToShow = listToShow;
         this.mContext = mContext;
         this.isSelected = isSelected;
         this.mInterface = listener;

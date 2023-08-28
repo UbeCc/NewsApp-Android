@@ -57,7 +57,7 @@
                 <androidx.fragment.app.FragmentContainerView
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:id="@+id/fragment_to_contain_video"
+                    android:id="@+id/fragment_videocontainer"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

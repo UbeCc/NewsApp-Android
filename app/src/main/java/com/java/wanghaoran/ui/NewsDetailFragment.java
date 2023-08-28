@@ -6,10 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.wanghaoran.MainApplication;
@@ -65,7 +69,7 @@ public class NewsDetailFragment extends Fragment {
         newsImage2 = view.findViewById(R.id.detail_image2);
         newsImage3 = view.findViewById(R.id.detail_image3);
         newsImage4 = view.findViewById(R.id.detail_image4);
-        containerView = view.findViewById(R.id.fragment_to_contain_video);
+        containerView = view.findViewById(R.id.fragment_videocontainer);
         buttonFavorite = view.findViewById(R.id.favoriteFloatingActionButton);
         buttonUnFavorite = view.findViewById(R.id.favoriteFloatingActionButton2);
 
@@ -83,38 +87,35 @@ public class NewsDetailFragment extends Fragment {
         }
 
         // 最多容纳四张照片，这里没有搞SwipeRefreshLayout。因为据观察一条新闻最多四张照片
-        if(newsToShow.getImages().length >= 1 ) {
-            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[0], newsImage1);
-        } else {
-            newsImage1.setVisibility(View.GONE);
-        }
-        if(newsToShow.getImages().length >= 2 ) {
-            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[1],newsImage2);
-        }else{
-            newsImage2.setVisibility(View.GONE);
-        }
-        if(newsToShow.getImages().length >= 3 ) {
-            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[2],newsImage3);
-        }else{
-            newsImage3.setVisibility(View.GONE);
-        }
-        if(newsToShow.getImages().length >= 4 ) {
-            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[3],newsImage4);
-        }else{
-            newsImage4.setVisibility(View.GONE);
-        }
-        if(newsToShow.getVideo().length >= 1) {
+        if(newsToShow.getImages().length >= 1 ) PictureManager.loadPictureWithoutPlaceHolder(
+                context,newsToShow.getImages()[0], newsImage1);
+        else newsImage1.setVisibility(View.GONE);
+        if(newsToShow.getImages().length >= 2 ) PictureManager.loadPictureWithoutPlaceHolder(
+                context,newsToShow.getImages()[1],newsImage2);
+        else newsImage2.setVisibility(View.GONE);
+        if(newsToShow.getImages().length >= 3 ) PictureManager.loadPictureWithoutPlaceHolder(
+                context,newsToShow.getImages()[2],newsImage3);
+        else newsImage3.setVisibility(View.GONE);
+        if(newsToShow.getImages().length >= 4 ) PictureManager.loadPictureWithoutPlaceHolder(
+                context,newsToShow.getImages()[3],newsImage4);
+        else newsImage4.setVisibility(View.GONE);
+
+        if(newsToShow.getVideo().length != 0) {
             String path = newsToShow.getVideo()[0];
-            VideoFragment to_fill = VideoFragment.newInstance(path);
-            getParentFragmentManager().beginTransaction().add(R.id.fragment_to_contain_video, to_fill).commit();
-        } else {
-            containerView.setVisibility(View.GONE);
-        }
+            VideoFragment to_fill = VideoFragment.getInstance(path);
+            getParentFragmentManager().beginTransaction().add(R.id.fragment_videocontainer, to_fill).commit();
+//
+//            VideoView videoView = view.findViewById(R.id.fragment_to_contain_video).findViewById(R.id.videoView);
+//            videoView.setVideoPath("http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8");  // 香港卫视地址
+//            videoView.start();
+//            MediaController mediaController = new MediaController(context);
+//            videoView.setMediaController(mediaController);
+//            mediaController.setMediaPlayer(videoView);
+        } else containerView.setVisibility(View.GONE);
 
         MainApplication.getNavView().setVisibility(View.GONE);
         MainApplication.getTopFragmentContainer().setVisibility(View.GONE);
         return view;
-
     }
 
     @Override

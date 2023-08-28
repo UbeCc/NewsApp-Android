@@ -98,19 +98,15 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
         drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {}
-
             @Override
             public void onDrawerOpened(View drawerView) {}
-
             @Override
             public void onDrawerClosed(View drawerView) {
                 drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
             }
-
             @Override
-            public void onDrawerStateChanged(int newState) {
-            }
+            public void onDrawerStateChanged(int newState) {}
         });
     }
 
@@ -123,7 +119,6 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
     }
 
     private boolean onNavItemSelected(MenuItem item) {
-
         if (item.getItemId() == R.id.navigation_recommend) {
             if(!MainApplication.newsPage) replaceFragment(NewsListFragment.class);
             MainApplication.newsPage = true;

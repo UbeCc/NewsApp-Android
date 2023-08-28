@@ -1,15 +1,21 @@
 package com.java.wanghaoran;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.java.wanghaoran.service.UserSQLiteOpenHelper;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity{
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
@@ -19,6 +25,11 @@ public class LoginActivity extends AppCompatActivity {
     private String username;
     private String password;
     private UserSQLiteOpenHelper databaseHelper;
+
+
+    VideoView vv;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

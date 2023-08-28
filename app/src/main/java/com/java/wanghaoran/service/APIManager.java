@@ -118,45 +118,35 @@ public final class APIManager {
     public void execute(int page) {
 //      Log.d("Result", keyWords + " " + startTime + " " + endTime + " " + categories);
         String rawUrl = "https://api2.newsminer.net/svc/news/queryNewsList?size=10&startDate="
-                + startTime + "&endDate=" + endTime+"&words="+ keyWords + "&categories=" + categories;
+                + startTime + "&endDate=" + endTime + "&words="+ keyWords + "&categories=" + categories;
         String url = rawUrl + "&page=" + page;
-        Log.d("API", "URL is " + url);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         try {
             Response response = client.newCall(request).execute();
             String responseBody = response.body().string();
-            try {
-                Gson gson = new Gson();
-                NewsResponse newsResponse = gson.fromJson(responseBody, NewsResponse.class);
-                Log.d("API", "Successful response");
-                if(newsResponse != null) {
-                    List<NewsResponse.NewsContent> data = newsResponse.data;
-                    if (!data.isEmpty()) {
-                        newsFetched.clear();
-                        int newsSize = data.size();
-                        Log.d("Result", "QWQ");
-                        for (int i = 0; i < newsSize; i++) {
-                            try {
-                                String rawTitle = data.get(i).title;
-                                String title = rawTitle.split("[\n|\r]")[0];
-                                News tempNews = Utils.initNews(title, data.get(i).content, data.get(i).url,
-                                        data.get(i).publisher, data.get(i).publishTime, data.get(i).newsID,
-                                        data.get(i).image, data.get(i).video);
-                                newsFetched.add(tempNews);
-                            } catch (Exception e) {
-                                Log.d("Logger", "Error " + e.toString());
-                            }
-                        }
+            Gson gson = new Gson();
+            NewsResponse newsResponse = gson.fromJson(responseBody, NewsResponse.class);
+            Log.d("API", "Successful response");
+            if(newsResponse != null) {
+                List<NewsResponse.NewsContent> data = newsResponse.data;
+                if (!data.isEmpty()) {
+                    newsFetched.clear();
+                    int newsSize = data.size();
+                    Log.d("Result", "QWQ");
+                    for (int i = 0; i < newsSize; i++) {
+                        String rawTitle = data.get(i).title;
+                        String title = rawTitle.split("[\n|\r]")[0];
+                        News tempNews = Utils.initNews(title, data.get(i).content, data.get(i).url,
+                                data.get(i).publisher, data.get(i).publishTime, data.get(i).newsID,
+                                data.get(i).image, data.get(i).video);
+                        newsFetched.add(tempNews);
                     }
-                } else {
-                    Log.d("Result", "do not get response");
                 }
-            } catch (Exception e) {
-                Log.d("Result", "Error " + e.toString());
+            } else {
+                Log.d("Result", "no response");
             }
         }  catch (Exception e){
-            e.printStackTrace();
             Log.d("NewsList", "Other Error" + e.toString());
         }
     }
