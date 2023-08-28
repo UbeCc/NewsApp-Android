@@ -1,70 +1,78 @@
+// 同一条新闻，在不同用户的db里面，会有不同的id，所以不能用id来判断是否重复!!!
+
 package com.java.wanghaoran.service;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.java.wanghaoran.MainApplication;
-import com.java.wanghaoran.containers.News;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.java.wanghaoran.MainApplication;
+import com.java.wanghaoran.containers.News;
+
 public final class DBManager {
-
-    private static MySQLiteOpenHelper helper;
     private static SQLiteDatabase db;
-    private static Map<Long, News> news_already = new HashMap<>();
-    public DBManager(){
-        helper = new MySQLiteOpenHelper(MainApplication.getContext());
+    private static MySQLiteOpenHelper helper;
+    private static Map<Long, News> newsInStore = new HashMap<>();
 
+    public DBManager(String dbName) {
+        Log.d("Logger", "CreateTable: " + dbName);
+        helper = new MySQLiteOpenHelper(MainApplication.getContext(), dbName);
+//        Log.d("QWQ", "1helper.dbname: " + helper.getDatabaseName() + " QWQ " + helper.databaseName);
         db = helper.getWritableDatabase();
+//        Log.d("QWQ", "3helper.dbname: " + helper.getDatabaseName() + " QWQ " + helper.databaseName);
         helper.onCreate(db);
+//        Log.d("QWQ", "2helper.dbname: " + helper.getDatabaseName() + " QWQ " + helper.databaseName);
     }
 
-    public static void add(Map<Long, News> news){
-        Long k = Long.valueOf(news.size());
-        Long k0 = Long.valueOf(news_already.size());
-        Log.d("DBManager", "Trying to add" + k + "reords");
+    /**
+     * 向数据库中添加新闻
+     * @param news Map<Long, News>要添加的新闻和其对应编号
+     */
+    public static void add(Map<Long, News> news) {
+        Long newsSize = Long.valueOf(news.size());
+        Long newsInStoreSize = Long.valueOf(newsInStore.size());
         int counter  = 0;
         db.beginTransaction();
 
         try {
-            for (Long i = k0; i < k; i++) {
-                News item = news.get(i);
-                news_already.put(i,item);
+            for (Long i = newsInStoreSize; i < newsSize; i++) {
+                News mNews = news.get(i);
+                newsInStore.put(i, mNews);
                 counter++;
-                db.execSQL("insert OR IGNORE into myNews VALUES(?,?)", new Object[]{(int)((long)i), item.toString()});
+                // 这里已经转换成Gson格式了
+                db.execSQL("INSERT OR IGNORE INTO " + helper.getDatabaseName() + " VALUES(?,?)", new Object[]{(int)((long)i), mNews.toString()});
             }
             db.setTransactionSuccessful();
-        }finally {
+        } finally {
             db.endTransaction();
-            Log.d("DBManager", "Actually added" + counter + "reords");
         }
     }
 
+    /**
+     * 查询现在数据库中的所有新闻
+     * @return ret List<News>所有新闻
+     */
     public static List<News> query(){
-
+        Cursor cursor = db.rawQuery("SELECT * FROM " + helper.getDatabaseName(), null);
+        ArrayList<News> ret = new ArrayList<>();
         Gson gson = new Gson();
-        ArrayList<News> ans = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT * FROM myNews", null);
-        while(c.moveToNext()){
-            News item =  gson.fromJson(c.getString(1), News.class) ;
-            ans.add(item);
+        while(cursor.moveToNext()){
+            News item =  gson.fromJson(cursor.getString(1), News.class) ;
+            ret.add(item);
         }
-        Log.d("DBManager", "Read" + ans.toArray().length + "records from data base");
-        return ans;
+        return ret;
     }
 
+    /**
+     * 关闭数据库
+     */
     public static void closeDB(){
         db.close();
     }
-
-
-
-
-
 }

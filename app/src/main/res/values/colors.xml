@@ -11,5 +11,6 @@
     <color name="title_text_color">#000000</color>
     <color name="grey">#FF999999</color>
     <color name="dark_grey">#FF111111</color>
+    <color name="bg_color">#ffdf80</color>
 
 </resources>

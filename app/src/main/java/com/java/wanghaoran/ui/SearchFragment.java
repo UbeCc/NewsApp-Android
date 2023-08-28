@@ -4,37 +4,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
-
-
-import androidx.coordinatorlayout.widget.ViewGroupUtils;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.widget.SearchView;
-
-import com.java.wanghaoran.R;
-import com.java.wanghaoran.Utils;
-import com.java.wanghaoran.service.FetchFromAPIManager;
-import com.java.wanghaoran.service.NewsManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.java.wanghaoran.R;
+import com.java.wanghaoran.Utils;
+import com.java.wanghaoran.containers.Keywords;
+import com.java.wanghaoran.service.APIManager;
 
-public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
-
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private List<String> list = new ArrayList<String>();
     private SearchView searchView;
     private Spinner spinnerView;
@@ -46,9 +36,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private OnSearchInputFinished mListener;
     String mCategory;
 
-    public SearchFragment() {}
+    public SearchFragment() {
+    }
 
-    public interface OnSearchInputFinished{
+    public interface OnSearchInputFinished {
         void finished();
     }
 
@@ -57,29 +48,39 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         super.onAttach(context);
         if (context instanceof SearchFragment.OnSearchInputFinished) {
             mListener = (SearchFragment.OnSearchInputFinished) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list.add("娱乐");list.add("军事");list.add("教育");
-        list.add("文化");list.add("健康");list.add("财经");
-        list.add("汽车");list.add("科技");list.add("社会");
+        list.add("综合");
+        for (Keywords keyword : Keywords.values()) {
+            list.add(keyword.toString());
+        }
+    }
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        queryText = s;
+        getInformation();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        queryText = s;
+        return false;
     }
 
     // 搜索效果并不好，实际上还是有很多重复的内容
-    private void collectInformation(){
-//        Log.d("SearchFragment", queryText );
+    private void getInformation() {
+        if (queryText == "综合") queryText = "";
         List<String> catagories = new ArrayList<>();
         catagories.add(mCategory);
-        String begin_time = Utils.cleanDateExpression(startTime.getText().toString());
-        String end_time =  Utils.cleanDateExpression(endTime.getText().toString());
+        String begin_time = Utils.prettifyDateExpression(startTime.getText().toString());
+        String end_time = Utils.prettifyDateExpression(endTime.getText().toString());
 //        Log.d("SearchFragment", queryText + catagories + begin_time + end_time);
-        FetchFromAPIManager.getInstance().handleSearch(catagories,begin_time,end_time, queryText);
+        APIManager.getInstance().setParams(catagories, begin_time, end_time, queryText);
         NewsListFragment.getInstance().reloadNews();
         mListener.finished();
     }
@@ -91,8 +92,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
         spinnerText = view.findViewById(R.id.text1);
         spinnerView = view.findViewById(R.id.selections);
+//         避免默认选择第一项
+        spinnerView.setSelection(0,true);
         spinnerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, list);
-
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerView.setAdapter(spinnerAdapter);
         spinnerView.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -101,11 +103,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 mCategory = spinnerAdapter.getItem(arg2);
                 arg0.setVisibility(View.VISIBLE);
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 arg0.setVisibility(View.VISIBLE);
             }
         });
-
         spinnerView.setOnTouchListener(new Spinner.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -126,30 +128,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchView = view.findViewById(R.id.searchBar);
         startTime = view.findViewById(R.id.editTextDateStart);
         endTime = view.findViewById(R.id.editTextDateEnd);
-//        Log.d("Logger", view.findViewById(R.id.ssearch_button).getClass().toString());
         searchButton = view.findViewById(R.id.ssearch_button);
         searchView.setOnQueryTextListener(this);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                collectInformation();
+                getInformation();
             }
         });
         return view;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        queryText = s;
-        Log.d("onQueryTextSubmit", s);
-        collectInformation();
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        queryText = s;
-        Log.d("onQueryTextChange", s);
-        return false;
     }
 }

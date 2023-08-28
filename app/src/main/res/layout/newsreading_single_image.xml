@@ -22,7 +22,7 @@
                     android:id="@+id/detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="【CV晨读】三大运营商日赚5.13亿，拜登签署7400亿美元降通胀法案"
+                    android:text="【原神】1.7版本新角色：雷神"
                     android:textColor="@color/black"
                     android:textSize="24dp"
                     app:layout_constraintBottom_toTopOf="@+id/detail_description"
@@ -37,20 +37,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-
-                    android:text="Tongzhou Press  4720-08-05 09:20:33"
+                    android:text="米哈游  2023-08-27 16:26:34"
                     android:textColor="@color/grey"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_title"
                     app:layout_constraintBottom_toTopOf="@+id/detail_image1"/>
-                <View
 
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,15 +68,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerInside"
                     app:layout_constraintEnd_toEndOf="@+id/detail_description"
                     app:layout_constraintStart_toStartOf="parent"
                     />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="拜登签署《通胀缩减法案》美最大气候法案正式落地拜登签署《通胀缩减法案》美最大气候法案正式落地拜登签署《通胀缩减法案》美最大气候法案正式落地"
+                    android:text="原神1.7版本新角色雷神启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动启动"
                     android:textColor="@color/dark_grey"
                     android:textSize="18dp"
                     app:layout_constraintEnd_toEndOf="parent"

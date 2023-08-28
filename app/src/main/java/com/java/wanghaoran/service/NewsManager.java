@@ -3,174 +3,207 @@ package com.java.wanghaoran.service;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.java.wanghaoran.MainApplication;
-import com.java.wanghaoran.containers.News;
-import com.java.wanghaoran.Utils;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import com.java.wanghaoran.MainApplication;
+import com.java.wanghaoran.containers.News;
+import com.java.wanghaoran.Utils;
+
 public final class NewsManager {
+    // **TIPS**
+    // 对于工具类的非静态方法，可以创建一个静态实例以在其他类中使用
+    // 类似C++中在struct MyStruct中声明MyStruct* myStruct
     private final static NewsManager instance = new NewsManager();
+    // 如果新闻条目超过int最大值2147483647，需要用long存储
+    // 并且方便根据ID查找
+    // 所以用Map数据结构
+    private List<Long> favorite = MainApplication.myUser.favorite;
+    private List<Long> history = MainApplication.myUser.history;
     private static Map<Long, News> news = new HashMap<>();
-    private static Map<String, Long> id_convert = new HashMap<>();
-    private static Map<Long, String> id_re_convert = new HashMap<>();
-    private static List<Long> read_history = new ArrayList<>();
-    private static List<Long> favorite_history = new ArrayList<>();
-    private static boolean read = false;
+    private static Map<String, Long> idToNumFromAPI = new HashMap<>();
+    private static Map<Long, String> idToAPIFromNum = new HashMap<>();
+    private static boolean isRead = false;
 
-    public static void writeFavPreference(){
+    private NewsManager(){}
 
-        SharedPreferences preferences_fav = MainApplication.getContext().getSharedPreferences("fav",0);
-        Log.d("preferenceTest","fav");
+    public static NewsManager getInstance() {return instance;}
 
-
-        preferences_fav.edit().putString("fav",Utils.listToString(favorite_history)).commit();
-
-    }
-    public static void writeHisPreference(){
-        Log.d("preferenceTest","his");
-        SharedPreferences preferences_his = MainApplication.getContext().getSharedPreferences("his",0);
-
-        preferences_his.edit().putString("his",Utils.listToString(read_history)).commit();
-
-
+    /**
+     * 根据ID获取特定一条新闻
+     * @param id
+     * @return news 一条新闻
+     */
+    public News getNews(long id) {
+        if(!isRead)  readMemory();
+        return news.get(id);
     }
 
-    private static void readHistoryFromPreference(){
-        Log.d("preferenceTest","read");
-        SharedPreferences preferences_his = MainApplication.getContext().getSharedPreferences("his",0);
-        SharedPreferences preferences_fav = MainApplication.getContext().getSharedPreferences("fav",0);
-        read_history = Utils.stringToList(preferences_his.getString("his",""));
-        favorite_history = Utils.stringToList(preferences_fav.getString("fav",""));
-        Log.d("preferenceTest","read" + read_history.size() + " " + favorite_history.size());
-        for(Long a : favorite_history){
-            news.get(a).setFavorites(true);
+    /**
+     * 从SQLite中读取历史阅读记录
+     */
+    public void readMemory(){
+        Log.d("News", "readMemory: " + MainApplication.username);
+        List<News> memNewsList = DBManager.query();
+        for(News memNews : memNewsList) {
+            Long id = Long.valueOf(memNews.getId());
+            news.put(id, memNews);
+            idToNumFromAPI.put(memNews.getNewsID(), id);
+            idToAPIFromNum.put(id, memNews.getNewsID());
+        }
+        readRecord();
+        isRead = true;
+    }
+
+//    Context.getSharedPreferences的第二个参数mode不是具体数据，而是Operating Mode
+//    MODE_PRIVATE,
+//    MODE_WORLD_READABLE,
+//    MODE_WORLD_WRITEABLE,
+//    MODE_MULTI_PROCESS,
+
+    /**
+     * 通过SharedPreferences将历史阅读写入SQLite
+     */
+    public void writeHistory() {
+        MainApplication.getInstance().saveUserInfo(MainApplication.username, "HIST", Utils.listToString(history));
+    }
+
+    /**
+     * 通过SharedPreferences将收藏写入本地而非SQLite
+     * 这样可以极大程度上减小查询时间
+     */
+    public void writeFavorite() {
+        MainApplication.getInstance().saveUserInfo(MainApplication.username, "FAVO", Utils.listToString(favorite));
+    }
+
+    /**
+     * 通过SharedPreferences读取历史阅读和收藏
+     */
+    private void readRecord() {
+        history = Utils.stringToList(MainApplication.getInstance().getUserInfo(MainApplication.username, "HIST"));
+        favorite = Utils.stringToList(MainApplication.getInstance().getUserInfo(MainApplication.username, "FAVO"));
+        Log.d("Logger", "His & Fav: " + history.toString() + " " + favorite.toString());
+//        Log.d("Preference","{History Favorite} size(): "+ history.size() + " " + favorite.size());
+        for(Long id: favorite) {
+//            Log.d("News", "readRecord: " + favorite.toString());
+            news.get(id).setFavorites(true);
         }
     }
 
-    public static void read_from_disk(){
-        List<News> temp =  DBManager.query();
-        for(News item : temp){
-            Long id = Long.valueOf(item.getId());
-            news.put(id, item);
-            id_convert.put(item.getIdFromAPI(),id);
-            id_re_convert.put(id,item.getIdFromAPI());
-        }
-        readHistoryFromPreference();
-        read = true;
-    }
-
-    public static Long convert_id(String API_ID){
-        if(!read)  read_from_disk();
-        if(id_convert.containsKey(API_ID)){
-            return id_convert.get(API_ID);
-        }else{
-            return -1L;
+    /**
+     * 通过API_ID获取本地ID
+     * @param idFromAPI
+     * @return 本地ID，若没有则返回-1
+     */
+    public Long convertIdToNum(String idFromAPI) {
+        if(!isRead)  readMemory();
+        if(idToNumFromAPI.containsKey(idFromAPI)) {
+            return idToNumFromAPI.get(idFromAPI);
+        } else {
+            return -1l;
         }
     }
 
-    public List<News> get_record(int mode){// 0 for history
-        if(!read)  read_from_disk();
-        // Log.d("NewsManager", "Trying to get news");
-        List<News> response = new ArrayList<>();
-        if(mode == 0){
-            for(Long l : read_history){
-                News temp = news.get(l);
-                if(temp != null){
-                    response.add(temp);
+    /**
+     * 通过本地ID获取历史或收藏的全部新闻
+     * @param mode 0 for History, 1 for Favorite
+     * @return List<News>，若没有则返回null
+     */
+    public List<News> getRecord(int mode){
+        if(!isRead) readMemory();
+        List<News> responseNews = new ArrayList<>();
+        if(mode == 0) {
+            Log.d("News", history.toString() + "HISTORY");
+            for(Long l: history) {
+                News tempNews = news.get(l);
+                if(tempNews != null) {
+                    responseNews.add(tempNews);
                 }
             }
-        }else{
-            for(Long l : favorite_history){
-                News temp = news.get(l);
-                if(temp != null){
-                    response.add(temp);
+        } else if(mode == 1) {
+            Log.d("News", favorite.toString() + "FAVORITE");
+            for(Long l: favorite) {
+                News tempNews = news.get(l);
+                if(tempNews != null) {
+                    responseNews.add(tempNews);
                 }
             }
         }
-        return response;
+        return responseNews;
     }
 
-    public void favorite_trigerred(Long id, boolean like){
-        if(!read)  read_from_disk();
-        News operating = news.get(id);
-        if(operating == null)return;
-        if(operating.getIsFavorites() == false ){
-            if(like){
-                operating.setFavorites(true);
-                favorite_history.add(id);
+    /**
+     * 修改对应id的新闻的收藏状态
+     * @param id 新闻的本地ID
+     * @param isLike true for like, false for dislike
+     */
+    public void favoriteSelected(Long id, boolean isLike) {
+        if(!isRead) readMemory();
+        News mNews = news.get(id);
+        if(mNews == null) return; // 没有这一条新闻
+        if(mNews.getIsFavorites() == false) {
+            if(isLike) {
+                mNews.setFavorites(true);
+                favorite.add(id);
                 Log.d("favourite","like");
             }
-        }else{
-            if(!like) {
-                operating.setFavorites(false);
-                favorite_history.remove(id);
+        } else {
+            if(!isLike) {
+                mNews.setFavorites(false);
+                favorite.remove(id);
                 Log.d("favourite", "dislike");
             }
         }
-        writeFavPreference();
+        writeFavorite();
     }
 
-
-    public Long createNews(News a_temp_news){
-        if(!read)  read_from_disk();
-        if(id_convert.containsKey(a_temp_news.getIdFromAPI())){
-            Long id_ = id_convert.get(a_temp_news.getIdFromAPI());
-            read_history.add(id_);
-            read_history.remove(id_);
-            writeHisPreference();
-            return id_;
+    /**
+     * 向历史记录中添加新闻
+     * @param mNews News，要添加的新闻
+     * @return API_ID，若没有则返回null
+     */
+    public Long createNews(News mNews) {
+        Long id;
+        if(!isRead)  readMemory();
+        if(idToNumFromAPI.containsKey(mNews.getNewsID())){
+            id = idToNumFromAPI.get(mNews.getNewsID());
+            history.add(id);
+            history.remove(id);
+            writeHistory();
+            return id;
         }
-        long id = news.size();
 
+        id = news.size() + 0L;
 
-        News a_new_one  = a_temp_news;
-        a_new_one.setId(id);
-        a_new_one.setBeenRead(true);
-        Log.d("NewsManager::_createNews(from temp news)", a_new_one.toString());
-        news.put(id,a_new_one);
-        id_convert.put(a_new_one.getIdFromAPI(),id);
-        id_re_convert.put(id, a_new_one.getIdFromAPI());
-        read_history.add(id);
-        writeHisPreference();
+        News newNews = mNews;
+        newNews.setId(id);
+        newNews.setBeenRead(true);
+        news.put(id, newNews);
+        idToNumFromAPI.put(newNews.getNewsID(),id);
+        idToAPIFromNum.put(id, newNews.getNewsID());
+        history.add(id);
+        writeHistory();
         DBManager.add(news);
 
         return id;
     }
 
-    public News getNews(long id) {
-        if(!read)  read_from_disk();
-        return news.get(id);
-    }
-
-
-
-    public void newsList(int offset, int pageSize, TaskRunner.Callback<List<News>> callback) {
-        if(!read)  read_from_disk();
+    public void getNewsList(int offset, int pageSize, TaskRunner.Callback<List<News>> callback) {
+        if(!isRead)  readMemory();
         TaskRunner.getInstance().execute(new Callable<List<News> >(){
         @Override
         public List<News> call(){
-            return applyForNews(offset, pageSize);}
+            return executeNews(offset, pageSize);}
         }, callback);
     }
 
-    private NewsManager(){}
-
-    private List<News> applyForNews(int offset, int pageSize){
-        Log.d("NewsList", "applyForNews executed");
-        if(!read)  read_from_disk();
-        return FetchFromAPIManager.getInstance().getNews(offset, pageSize);
+    private List<News> executeNews(int offset, int pageSize) {
+        Log.d("NewsList", "executeNews executed");
+        if(!isRead)  readMemory();
+        return APIManager.getInstance().getNews(offset, pageSize);
     }
-
-    public static NewsManager getInstance() {
-        //   if(!read)  read_from_disk();
-        return instance;
-    }
-
 }
 

@@ -12,7 +12,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:layout_height="50dp"
 
     android:background="?colorSurface"
-    android:button="@drawable/ic_tab_menu"
+    android:button="@drawable/ic_newslist"
     android:buttonTint="@color/purple_700"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"

@@ -1,133 +1,128 @@
 package com.java.wanghaoran.ui;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
 import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.service.PictureLoader;
-import com.java.wanghaoran.service.TaskRunner;
+import com.java.wanghaoran.service.PictureManager;
 import com.java.wanghaoran.Utils;
-
-import java.util.List;
 
 public class NewsDetailFragment extends Fragment {
     private Context context;
     private News newsToShow;
-    private TextView news_title, news_description, news_content;
-    private ImageView news_image, news_image2, news_image3, news_image4;
-    private Long news_id = -1L;
-    private FloatingActionButton button1, button2;
+    private Long newsID = -1L;
+    private TextView newsTitle, newsDescription, newsContent;
+    private ImageView newsImage1, newsImage2, newsImage3, newsImage4;
+    private FloatingActionButton buttonFavorite, buttonUnFavorite;
     private FragmentContainerView containerView;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.reading_news_one_pic, container, false);
-        if(getArguments() != null){
-            news_id = getArguments().getLong("newsId",-1);
+    /**
+     * 处理收藏按钮的点击事件
+     * @param mode 0 -> favorite, 1 -> unfavorite
+     */
+    private void favoriteClicked(int mode) {
+        Utils.makeToast(context, "收藏成功");
+        if(mode == 0){
+            NewsManager.getInstance().favoriteSelected(newsID,true);
+            buttonUnFavorite.setVisibility(View.VISIBLE);
+            buttonFavorite.setVisibility(View.GONE);
+        } else {
+            NewsManager.getInstance().favoriteSelected(newsID,false);
+            buttonUnFavorite.setVisibility(View.VISIBLE);
+            buttonFavorite.setVisibility(View.GONE);
         }
-        if(news_id >= 0){
-            newsToShow =  NewsManager.getInstance().getNews(news_id);
-        }else{
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.newsreading_single_image, container, false);
+        if(getArguments() != null) {
+            newsID = getArguments().getLong("newsId",-1);
+        }
+        if(newsID >= 0) {
+            newsToShow =  NewsManager.getInstance().getNews(newsID);
+        }else {
             newsToShow = Utils.initNews("Error","","","","","","","");
         }
 
-
         context = view.getContext();
-
-        news_title =  view.findViewById(R.id.detail_title);
-        news_description = view.findViewById(R.id.detail_description);
-        news_content = view.findViewById(R.id.detail_content);
-        news_image = view.findViewById(R.id.detail_image1);
-        news_image2 = view.findViewById(R.id.detail_image2);
-        news_image3 = view.findViewById(R.id.detail_image3);
-        news_image4 = view.findViewById(R.id.detail_image4);
+        newsTitle =  view.findViewById(R.id.detail_title);
+        newsDescription = view.findViewById(R.id.detail_description);
+        newsContent = view.findViewById(R.id.detail_content);
+        newsImage1 = view.findViewById(R.id.detail_image1);
+        newsImage2 = view.findViewById(R.id.detail_image2);
+        newsImage3 = view.findViewById(R.id.detail_image3);
+        newsImage4 = view.findViewById(R.id.detail_image4);
         containerView = view.findViewById(R.id.fragment_to_contain_video);
+        buttonFavorite = view.findViewById(R.id.favoriteFloatingActionButton);
+        buttonUnFavorite = view.findViewById(R.id.favoriteFloatingActionButton2);
 
-        button1 = view.findViewById(R.id.favoriteFloatingActionButton);
-        button2 = view.findViewById(R.id.favoriteFloatingActionButton2);
-        Log.d("NewsDetailFragment","open_a_news" + newsToShow.getId());
-        news_title.setText(newsToShow.getTitle());
-        news_description.setText(newsToShow.getSource() + "    " +newsToShow.getTime());
-        news_content.setText(newsToShow.getContent());
+        newsTitle.setText(newsToShow.getTitle());
+        newsDescription.setText(newsToShow.getSource() + "    " +newsToShow.getTime());
+        newsContent.setText(newsToShow.getContent());
 
-        button1.setOnClickListener(v->{handle_favorite_click(1);});
-        button2.setOnClickListener(v->{handle_favorite_click(2);});
+        buttonFavorite.setOnClickListener(v->{favoriteClicked(0);});
+        buttonUnFavorite.setOnClickListener(v->{favoriteClicked(1);});
 
         if(!newsToShow.getIsFavorites()){
-            button2.setVisibility(View.GONE);
-        }else{
-            button1.setVisibility(View.GONE);
+            buttonUnFavorite.setVisibility(View.GONE);
+        } else {
+            buttonFavorite.setVisibility(View.GONE);
         }
 
-        if(newsToShow.getImages().length >=1 ) {
-            PictureLoader.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[0],news_image);
-        }else{
-            news_image.setVisibility(View.GONE);
+        // 最多容纳四张照片，这里没有搞SwipeRefreshLayout。因为据观察一条新闻最多四张照片
+        if(newsToShow.getImages().length >= 1 ) {
+            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[0], newsImage1);
+        } else {
+            newsImage1.setVisibility(View.GONE);
         }
         if(newsToShow.getImages().length >= 2 ) {
-            PictureLoader.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[1],news_image2);
+            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[1],newsImage2);
         }else{
-            news_image2.setVisibility(View.GONE);
+            newsImage2.setVisibility(View.GONE);
         }
         if(newsToShow.getImages().length >= 3 ) {
-            PictureLoader.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[2],news_image3);
+            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[2],newsImage3);
         }else{
-            news_image3.setVisibility(View.GONE);
+            newsImage3.setVisibility(View.GONE);
         }
         if(newsToShow.getImages().length >= 4 ) {
-            PictureLoader.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[3],news_image4);
+            PictureManager.loadPictureWithoutPlaceHolder(context,newsToShow.getImages()[3],newsImage4);
         }else{
-            news_image4.setVisibility(View.GONE);
+            newsImage4.setVisibility(View.GONE);
         }
-        if(newsToShow.getVideo().length >= 1){
+        if(newsToShow.getVideo().length >= 1) {
             String path = newsToShow.getVideo()[0];
             VideoFragment to_fill = VideoFragment.newInstance(path);
             getParentFragmentManager().beginTransaction().add(R.id.fragment_to_contain_video, to_fill).commit();
-        }else{
+        } else {
             containerView.setVisibility(View.GONE);
         }
 
         MainApplication.getNavView().setVisibility(View.GONE);
         MainApplication.getTopFragmentContainer().setVisibility(View.GONE);
         return view;
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         MainApplication.getNavView().setVisibility(View.VISIBLE);
-        if(MainApplication.newsPage && !MainApplication.newsPageisSearchingPage) MainApplication.getTopFragmentContainer().setVisibility(View.VISIBLE);
-    }
-
-    private void handle_favorite_click(int i){
-        Toast.makeText(context,""+ i, Toast.LENGTH_SHORT);
-        if(i == 1){
-            NewsManager.getInstance().favorite_trigerred(news_id,true);
-            button2.setVisibility(View.VISIBLE);
-            button1.setVisibility(View.GONE);
-        }else{
-            NewsManager.getInstance().favorite_trigerred(news_id,false);
-            button1.setVisibility(View.VISIBLE);
-            button2.setVisibility(View.GONE);
+        if(MainApplication.newsPage && !MainApplication.newsPageisSearchingPage) {
+            MainApplication.getTopFragmentContainer().setVisibility(View.VISIBLE);
         }
     }
 }

@@ -3,22 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoginActivity">
 
     <FrameLayout
         android:layout_width="wrap_content"
+        android:id="@+id/logintop"
         android:layout_height="wrap_content">
-
         <ImageView
-            android:layout_width="544dp"
-            android:layout_height="825dp"
-            android:contentDescription="@string/imageview_placeholder"
+            android:layout_width="500dp"
+            android:layout_height="800dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/login_bg_graph" />
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/login_title"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="烽火快讯"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:layout_marginTop="250dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -32,20 +43,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawablePadding="16dp"
-                android:id="@+id/sign_email"
-                android:drawableRight="@drawable/ic_email"
-                android:hint="邮箱（选填）"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textColorHint="@color/black"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -56,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
-                android:id="@+id/sign_name"
+                android:id="@+id/sign_loginname"
                 android:drawableRight="@drawable/ic_person"
                 android:hint="姓名"
                 android:inputType="text"
@@ -74,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
-                android:id="@+id/sign_passwd"
+                android:id="@+id/sign_editpasswd"
                 android:drawableRight="@drawable/ic_lock"
                 android:hint="密码"
                 android:inputType="textPassword"
@@ -85,51 +83,55 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="horizontal">
 
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="105dp"
+                android:layout_height="50dp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/button_shape_with_bg"
+                android:background="@drawable/ic_bgbutton"
                 android:id="@+id/sign_btn_signup"
                 android:text="注册"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:textColor="#96ffffff"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="105dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/button_shape_with_bg"
-                android:id="@+id/sign_btn_signin"
+                android:background="@drawable/ic_bgbutton"
+                android:id="@+id/sign_btn_loginsignin"
                 android:text="登录"
                 android:textAllCaps="false"
                 android:textColor="#96ffffff"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
+    </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/change_passwd"
+            android:layout_width="209dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="忘记密码？"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="480dp"
+            android:background="@drawable/ic_bgbutton"
+            android:text="修改密码"
             android:textAlignment="center"
             android:textColor="#96ffffff"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
-
-    </LinearLayout>
+    </FrameLayout>
 
 </RelativeLayout>

@@ -3,23 +3,39 @@ package com.java.wanghaoran.containers;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class User {
-    private String name = "TestUser";
-    private List<Long> read_history = new ArrayList<>();
-    private  List<Long> like_history = new ArrayList<>();
+    private String username = "defaultUser";
+    private String password = "123456";
+    public List<Long> favorite = new ArrayList<>();
+    public List<Long> history = new ArrayList<>();
     public  List<Keywords> selected = new ArrayList<>();
     public  List<Keywords> unselected = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
+
+    public static User getUser(String username) {
+        for(User user: users) {
+            if(user.username.equals(username)) return user;
+        }
+        return null;
+    }
+
+    public static User addUser(String userName, String passWord) {
+        User user = new User();
+        user.username = userName;
+        user.password = passWord;
+        users.add(user);
+        return user;
+    }
 
     public User(){
-        selected.add(Keywords.教育);
-        selected.add(Keywords.娱乐);
-        selected.add(Keywords.科技);
-        selected.add(Keywords.体育);
-        selected.add(Keywords.健康);
-        unselected.add(Keywords.军事);
-        unselected.add(Keywords.文化);
-        unselected.add(Keywords.汽车);
-        unselected.add(Keywords.社会);
-        unselected.add(Keywords.财经);
+        int selectedNum = 0;
+        for(Keywords keyword: Keywords.values()) {
+            ++selectedNum;
+            if(selectedNum <= 5) selected.add(keyword);
+            else unselected.add(keyword);
+        }
     }
 }

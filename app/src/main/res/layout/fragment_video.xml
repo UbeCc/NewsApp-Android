@@ -12,7 +12,7 @@
 
         <VideoView
             android:layout_width="wrap_content"
-            android:layout_height="231dp"
+            android:layout_height="230dp"
             android:id="@+id/videoView"/>
     </LinearLayout>
 

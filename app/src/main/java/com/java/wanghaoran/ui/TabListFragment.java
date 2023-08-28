@@ -11,16 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.Tab;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.containers.Keywords;
 import com.java.wanghaoran.R;
-import com.java.wanghaoran.containers.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.java.wanghaoran.service.NewsManager;
 
 public class TabListFragment extends Fragment {
     public List<String> tabs = new ArrayList<String>();
@@ -40,12 +39,8 @@ public class TabListFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof onTabBarListener) {
             mListener = (onTabBarListener) context;
-        } else{
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +49,9 @@ public class TabListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_tablist, container, false);
         tabLayout = view.findViewById(R.id.subject_tabs);
         selectMenu = view.findViewById(R.id.edit_menu);
-
         selectMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

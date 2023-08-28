@@ -8,23 +8,26 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
-//    public MySQLiteOpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-//        super(context, name, factory, version);
-//    }
+    private final static String DEFAULTNAME = "defaultUser";
+    public String databaseName;
 
+    public String getDatabaseName() {
+        return databaseName;
+    }
 
-    public MySQLiteOpenHelper(@Nullable Context context) {
-        super(context, "myNews.db", null, 1);
+    public MySQLiteOpenHelper(@Nullable Context context, String dbName) {
+        super(context, (dbName == "" ? DEFAULTNAME : dbName) + ".db", null, 1);
+        databaseName = (dbName == "") ? DEFAULTNAME : dbName;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d("createtable","mynews");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS myNews" + " (_id INTEGER PRIMARY KEY UNIQUE, info TEXT)");
-    }
+        Log.d("Logger", "QWQ" + "createAgain" + databaseName);
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + databaseName + " (_id INTEGER PRIMARY KEY UNIQUE, info TEXT)");}
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("ALTER TABLE myNews ADD COLUMN other STRING");
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        sqLiteDatabase.execSQL("ALTER TABLE " + databaseName + " ADD COLUMN other STRING");
     }
+
 }
