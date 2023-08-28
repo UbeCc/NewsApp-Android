@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
+@Getter
 public class User {
-    private String username = "defaultUser";
+    public String username = "defaultUser";
     private String password = "123456";
     public List<Long> favorite = new ArrayList<>();
     public List<Long> history = new ArrayList<>();
     public  List<Keywords> selected = new ArrayList<>();
     public  List<Keywords> unselected = new ArrayList<>();
     private static List<User> users = new ArrayList<>();
-
     public static User getUser(String username) {
         for(User user: users) {
             if(user.username.equals(username)) return user;

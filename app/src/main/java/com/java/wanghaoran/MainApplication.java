@@ -44,6 +44,10 @@ public class MainApplication extends Application {
     public static void createDB() {
         Log.d("QWQ", "createDB: " + username);
         dbManager = new DBManager(username);
+        //wrong
+        if(User.getUser(username) == null) myUser = User.addUser(username, password);
+        else myUser = User.getUser(username);
+
     }
 
     @Override
@@ -51,9 +55,6 @@ public class MainApplication extends Application {
         super.onCreate();
         mySQLiteOpenHelper = new MySQLiteOpenHelper(this, username);
         context = getApplicationContext();
-        if(User.getUser(username) == null) {
-            myUser = User.addUser(username, password);
-        }
         new MySQLiteOpenHelper(context, username);
     }
 

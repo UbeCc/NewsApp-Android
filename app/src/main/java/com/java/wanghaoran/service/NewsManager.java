@@ -21,8 +21,8 @@ public final class NewsManager {
     // 如果新闻条目超过int最大值2147483647，需要用long存储
     // 并且方便根据ID查找
     // 所以用Map数据结构
-    private List<Long> favorite = MainApplication.myUser.favorite;
-    private List<Long> history = MainApplication.myUser.history;
+    public static List<Long> favorite = MainApplication.myUser.favorite;
+    public static List<Long> history = MainApplication.myUser.history;
     private static Map<Long, News> news = new HashMap<>();
     private static Map<String, Long> idToNumFromAPI = new HashMap<>();
     private static Map<Long, String> idToAPIFromNum = new HashMap<>();

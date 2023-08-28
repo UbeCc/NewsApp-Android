@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity{
                 }
                 else {
                     Utils.makeToast(LoginActivity.this, "登陆成功");
+                    Log.d("Logger", "Login: " + username);
                     MainApplication.username = username;
                     MainApplication.password = password;
                     MainApplication.createDB();
