@@ -70,6 +70,18 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("Logger","AppActivity save");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("Logger","AppActivity restore");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("Logger","AppActivity start");
         super.onCreate(savedInstanceState);

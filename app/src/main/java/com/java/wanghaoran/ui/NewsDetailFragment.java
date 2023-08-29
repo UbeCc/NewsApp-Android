@@ -2,6 +2,7 @@ package com.java.wanghaoran.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,15 @@ public class NewsDetailFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        MainApplication.getNavView().setVisibility(View.GONE);
+        MainApplication.getTopFragmentContainer().setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("Logger", "NewsDetailStart");
         View view = inflater.inflate(R.layout.newsreading_single_image, container, false);
         if(getArguments() != null) {
             newsID = getArguments().getLong("newsId",-1);
