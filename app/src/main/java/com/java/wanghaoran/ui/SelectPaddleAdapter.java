@@ -1,6 +1,7 @@
 package com.java.wanghaoran.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class SelectPaddleAdapter  extends BaseAdapter {
                 .repeat(1)
                 .playOn(view);
         TextView text = view.findViewById(R.id.text_in_subject_box);
+        Log.d("Logger", text.getText().toString());
         text.setTextSize(25);
         text.setText("  "+listToShow.get(i).name()+"  ");
 

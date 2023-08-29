@@ -57,6 +57,7 @@ public class TabListFragment extends Fragment {
             public void onClick(View view) {
                 if(mListener != null){
                     mListener.menuBarClicked();
+                    Log.d("Logger", "Menu bar clicked");
                 }
             }
         });
@@ -65,13 +66,14 @@ public class TabListFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mListener.tabSelected(tab.getText().toString());
+                Log.d("Logger", "Tab selected: " + tab.getText().toString());
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {} // TODO
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {} // TODO
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
         update_list();
         return view;

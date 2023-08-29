@@ -18,6 +18,7 @@ public final class NewsManager {
     // 对于工具类的非静态方法，可以创建一个静态实例以在其他类中使用
     // 类似C++中在struct MyStruct中声明MyStruct* myStruct
     private final static NewsManager instance = new NewsManager();
+    private final static NewsManager instanceForSearch = new NewsManager();
     // 如果新闻条目超过int最大值2147483647，需要用long存储
     // 并且方便根据ID查找
     // 所以用Map数据结构
@@ -31,6 +32,7 @@ public final class NewsManager {
     private NewsManager(){}
 
     public static NewsManager getInstance() {return instance;}
+    public static NewsManager getInstanceForSearch() {return instanceForSearch;}
 
     /**
      * 根据ID获取特定一条新闻

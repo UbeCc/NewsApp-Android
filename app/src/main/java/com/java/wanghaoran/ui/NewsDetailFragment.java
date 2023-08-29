@@ -45,8 +45,8 @@ public class NewsDetailFragment extends Fragment {
             buttonFavorite.setVisibility(View.GONE);
         } else {
             NewsManager.getInstance().favoriteSelected(newsID,false);
-            buttonUnFavorite.setVisibility(View.VISIBLE);
-            buttonFavorite.setVisibility(View.GONE);
+            buttonUnFavorite.setVisibility(View.GONE);
+            buttonFavorite.setVisibility(View.VISIBLE);
         }
     }
 
@@ -60,6 +60,7 @@ public class NewsDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("Logger", "NewsDetailStart");
+        MainApplication.newsDetailPage = true;
         View view = inflater.inflate(R.layout.newsreading_single_image, container, false);
         if(getArguments() != null) {
             newsID = getArguments().getLong("newsId",-1);

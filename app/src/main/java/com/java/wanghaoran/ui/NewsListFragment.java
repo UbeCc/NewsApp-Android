@@ -37,10 +37,11 @@ public class NewsListFragment extends Fragment {
     private SwipeRefreshLayout listContainer;
     private int page = 1;
     public static NewsListFragment newsListFragment = new NewsListFragment();
+    public static NewsListFragment newsListFragmentForSearch = new NewsListFragment();
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public static NewsListFragment getInstance() {return newsListFragment;}
-
+    public static NewsListFragment getInstanceForSearch() {return newsListFragmentForSearch;}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("NewsList", "onCreateView");
@@ -86,12 +87,22 @@ public class NewsListFragment extends Fragment {
     }
 
     public void reloadNews() {
+        Log.d("Logger", "reloadNews()");
         page = 1;
         if (listScrollListener == null) return;
         Log.d("NewsList", "reloadNews()");
         // 重新修改
         listScrollListener.resetState();
-        NewsManager.getInstance().getNewsList(0, PAGESIZE, new NewsFetchCallback(true));
+        NewsManager.getInstanceForSearch().getNewsList(0, PAGESIZE, new NewsFetchCallback(true));
+    }
+    public void reloadNewsForSearch() {
+        Log.d("Logger", "reloadNews()");
+        page = 1;
+        if (listScrollListener == null) return;
+        Log.d("NewsList", "reloadNews()");
+        // 重新修改
+        listScrollListener.resetState();
+        NewsManager.getInstanceForSearch().getNewsList(0, PAGESIZE, new NewsFetchCallback(true));
     }
 
     // 声明：本逻辑非原创

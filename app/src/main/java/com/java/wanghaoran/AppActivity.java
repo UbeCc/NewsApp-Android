@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ import com.java.wanghaoran.ui.UserPageFragment;
 
 public class AppActivity extends AppCompatActivity  implements TabListFragment.onTabBarListener,
         SelectPaddleFragment.onSelectPaddleListener, SearchFragment.OnSearchInputFinished {
+    private long exitTime = 0;
     private ActivityMainBinding binding;
     public BottomNavigationView navView;
     public SearchView searchView;
@@ -40,8 +44,6 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
     private DrawerLayout drawerLayout;
     private TabListFragment tabListFragment;
     private NewsListFragment newsListFragment;
-
-    Boolean newsListVisible = true;
 
     @Override
     public void selectPaddleConfirmed(){
@@ -59,7 +61,7 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
         List<String> a  = new ArrayList<>();
         a.add(tag);
         APIManager.getInstance().setTopics(a);
-//        Log.d("QWQ", "selected");
+        Log.d("Logger", "tabSelected");
         newsListFragment.reloadNews();
     }
 
@@ -122,7 +124,7 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
         });
     }
 
-    private void replaceFragment(Class<? extends Fragment> fragmentClass) { // 声明: 非原创
+    public void replaceFragment(Class<? extends Fragment> fragmentClass) { // 声明: 非原创
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainer, fragmentClass, null)
@@ -130,7 +132,7 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
                 .commit();
     }
 
-    private boolean onNavItemSelected(MenuItem item) {
+    public boolean onNavItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.navigation_recommend) {
             if(!MainApplication.newsPage) replaceFragment(NewsListFragment.class);
             MainApplication.newsPage = true;
@@ -170,4 +172,35 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
         MainApplication.newsPageisSearchingPage = true;
         newsListFragment.reloadNews();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        Intent home = new Intent(Intent.ACTION_MAIN);
+//        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        home.addCategory(Intent.CATEGORY_HOME);
+//        startActivity(home);
+        //        // 在返回键被点击时启动主页
+//        Intent intent = new Intent(this, AppActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // 清除其他活动并重新创建主页
+//        startActivity(intent);
+//        finish(); // 结束当前活动
+    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if(MainApplication.newsDetailPage == true) {
+//            return super.onKeyDown(keyCode, event);
+//        }
+//        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+//            if((System.currentTimeMillis()-exitTime) > 2000){
+//                Toast.makeText(getApplicationContext(), "再按一次退出应用", Toast.LENGTH_SHORT).show();
+//                exitTime = System.currentTimeMillis();
+//            } else {
+//                finish();
+//                System.exit(0);
+//            }
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

@@ -34,6 +34,7 @@ public class MainApplication extends Application {
     private static FragmentContainerView topFragmentContainer;
     public static View NewsList = null;
     public static User myUser;
+    public static boolean newsDetailPage = false;
     public static boolean newsPage = true;
     public static boolean searchPage = false;
     public static boolean userPage = false;

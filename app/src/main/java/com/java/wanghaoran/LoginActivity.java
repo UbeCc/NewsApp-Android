@@ -52,6 +52,14 @@ public class LoginActivity extends AppCompatActivity{
             public void onClick(View v) {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
+                if(username == "") {
+                    Utils.makeToast(LoginActivity.this, "用户名不能为空");
+                    return;
+                }
+                if(password == "") {
+                    Utils.makeToast(LoginActivity.this, "密码不能为空");
+                    return;
+                }
                 int result = databaseHelper.checkLoginCredentials(username, password);
                 if (result == 1) {
                     Utils.makeToast(LoginActivity.this, "用户名不存在，请您先注册");

@@ -1,7 +1,11 @@
 package com.java.wanghaoran.ui;
 
+import static com.java.wanghaoran.Utils.replaceFragment;
+import static com.java.wanghaoran.ui.NewsListFragment.newsListFragment;
+
 import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
 import androidx.fragment.app.Fragment;
@@ -14,17 +18,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.java.wanghaoran.MainActivity;
+import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
 import com.java.wanghaoran.Utils;
+import com.java.wanghaoran.AppActivity;
 import com.java.wanghaoran.containers.Keywords;
 import com.java.wanghaoran.service.APIManager;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
+    private View view;
     private List<String> list = new ArrayList<String>();
     private SearchView searchView;
     private Spinner spinnerView;
@@ -36,8 +45,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private OnSearchInputFinished mListener;
     String mCategory;
 
-    public SearchFragment() {
-    }
+    public SearchFragment() {}
 
     public interface OnSearchInputFinished {
         void finished();
@@ -50,9 +58,74 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             mListener = (SearchFragment.OnSearchInputFinished) context;
         }
     }
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("SearchFragment", "onDetach");
+        mListener = null;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("SearchFragment", "onResume");
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("SearchFragment", "onStop");
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("SearchFragment", "onDestroy");
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SearchFragment", "onStart");
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("SearchFragment", "onDestroyView");
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("SearchFragment", "onSaveInstanceState");
+    }
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.d("SearchFragment", "onViewStateRestored");
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.d("SearchFragment", "onHiddenChanged");
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Log.d("SearchFragment", "onLowMemory");
+    }
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        Log.d("SearchFragment", "onAttachFragment");
+    }
+    @Override
+    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(context, attrs, savedInstanceState);
+        Log.d("SearchFragment", "onInflate");
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("SearchFragment", "onCreateView");
         super.onCreate(savedInstanceState);
         list.add("综合");
         for (Keywords keyword : Keywords.values()) {
@@ -81,14 +154,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         String end_time = Utils.prettifyDateExpression(endTime.getText().toString());
 //        Log.d("SearchFragment", queryText + catagories + begin_time + end_time);
         APIManager.getInstance().setParams(catagories, begin_time, end_time, queryText);
-        NewsListFragment.getInstance().reloadNews();
+        NewsListFragment.getInstanceForSearch().reloadNewsForSearch();
         mListener.finished();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
 
         spinnerText = view.findViewById(R.id.text1);
         spinnerView = view.findViewById(R.id.selections);
