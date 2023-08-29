@@ -12,10 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * TaskRunner类主要用于运行Http请求
+ * HttpManager类主要用于运行Http请求
  * 通过回调实现
  */
-public class TaskRunner {
+public class HttpManager {
     public interface Callback<R> {void complete(Result<R> res);}
     @Data
     @AllArgsConstructor
@@ -27,13 +27,13 @@ public class TaskRunner {
         public static <T> Result<T> ofError(Throwable error) {return new Result<>(false, null, error);}
     }
 
-    private final static TaskRunner instance = new TaskRunner();
+    private final static HttpManager instance = new HttpManager();
     private final Executor workers = Executors.newSingleThreadExecutor();
     private final Handler uiThread = new Handler(Looper.getMainLooper());
 
-    private TaskRunner() {}
+    private HttpManager() {}
 
-    public static TaskRunner getInstance() {return instance;}
+    public static HttpManager getInstance() {return instance;}
 
     public <R> void execute(Callable<R> task, Callback<R> callback) {
         workers.execute(() -> {

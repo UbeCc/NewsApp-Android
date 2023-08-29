@@ -1,6 +1,5 @@
 package com.java.wanghaoran.service;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -193,9 +192,9 @@ public final class NewsManager {
         return id;
     }
 
-    public void getNewsList(int offset, int pageSize, TaskRunner.Callback<List<News>> callback) {
+    public void getNewsList(int offset, int pageSize, HttpManager.Callback<List<News>> callback) {
         if(!isRead)  readMemory();
-        TaskRunner.getInstance().execute(new Callable<List<News> >(){
+        HttpManager.getInstance().execute(new Callable<List<News> >(){
         @Override
         public List<News> call(){
             return executeNews(offset, pageSize);}

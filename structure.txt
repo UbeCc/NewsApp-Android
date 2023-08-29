@@ -1,0 +1,164 @@
+.
+├── app
+│   ├── build.gradle
+│   ├── libs
+│   ├── proguard-rules.pro
+│   ├── sampledata
+│   └── src
+│       ├── androidTest
+│       │   ├── java
+│       │   │   └── com
+│       │   │       └── java
+│       │   │           └── wanghaoran
+│       │   │               └── ExampleInstrumentedTest.java
+│       │   └── res
+│       │       └── drawable
+│       ├── assets
+│       │   ├── DroidSans.ttf
+│       │   ├── DroidSerif.ttf
+│       │   ├── LibreBaskerville-Regular.ttf
+│       │   └── RobotoSlab-Regular.ttf
+│       ├── main
+│       │   ├── AndroidManifest.xml
+│       │   ├── java
+│       │   │   └── com
+│       │   │       └── java
+│       │   │           └── wanghaoran
+│       │   │               ├── AppActivity.java
+│       │   │               ├── LoginActivity.java
+│       │   │               ├── MainActivity.java
+│       │   │               ├── MainApplication.java
+│       │   │               ├── Utils.java
+│       │   │               ├── containers
+│       │   │               │   ├── Keywords.java
+│       │   │               │   ├── News.java
+│       │   │               │   ├── NewsResponse.java
+│       │   │               │   └── User.java
+│       │   │               ├── service
+│       │   │               │   ├── APIManager.java
+│       │   │               │   ├── DBManager.java
+│       │   │               │   ├── MySQLiteOpenHelper.java
+│       │   │               │   ├── NewsManager.java
+│       │   │               │   ├── PictureManager.java
+│       │   │               │   ├── TaskRunner.java
+│       │   │               │   └── UserSQLiteOpenHelper.java
+│       │   │               └── ui
+│       │   │                   ├── EndlessRecyclerViewScrollListener.java
+│       │   │                   ├── NewsDetailFragment.java
+│       │   │                   ├── NewsListAdapter.java
+│       │   │                   ├── NewsListFragment.java
+│       │   │                   ├── RecordListFragment.java
+│       │   │                   ├── SearchFragment.java
+│       │   │                   ├── SelectPaddleAdapter.java
+│       │   │                   ├── SelectPaddleFragment.java
+│       │   │                   ├── TabListFragment.java
+│       │   │                   ├── UserPageFragment.java
+│       │   │                   ├── VideoFragment.java
+│       │   │                   ├── newslist
+│       │   │                   │   ├── NewslistFragment.java
+│       │   │                   │   └── NewslistViewModel.java
+│       │   │                   ├── profile
+│       │   │                   │   ├── ProfileFragment.java
+│       │   │                   │   └── ProfileViewModel.java
+│       │   │                   └── recommend
+│       │   │                       ├── RecommendFragment.java
+│       │   │                       └── RecommendViewModel.java
+│       │   ├── login_background-playstore.png
+│       │   └── res
+│       │       ├── drawable
+│       │       │   ├── ic_bgbutton.xml
+│       │       │   ├── ic_email.xml
+│       │       │   ├── ic_launcher_background.xml
+│       │       │   ├── ic_loading.xml
+│       │       │   ├── ic_lock.xml
+│       │       │   ├── ic_nav_newslist_24dp.xml
+│       │       │   ├── ic_nav_profile_24dp.xml
+│       │       │   ├── ic_nav_recommend_24dp.xml
+│       │       │   ├── ic_newslist.xml
+│       │       │   ├── ic_notifications_black_24dp.xml
+│       │       │   ├── ic_person.xml
+│       │       │   ├── ic_tab_menu.xml
+│       │       │   ├── new_ic_launcher_background.xml
+│       │       │   ├── new_ic_launcher_foreground.xml
+│       │       │   ├── news.png
+│       │       │   ├── news_placeholder.xml
+│       │       │   └── profile_photo.xml
+│       │       ├── font
+│       │       │   └── playfair_display_sc.ttf
+│       │       ├── layout
+│       │       │   ├── activity_login.xml
+│       │       │   ├── activity_main.xml
+│       │       │   ├── fragment_actionlist.xml
+│       │       │   ├── fragment_newslist.xml
+│       │       │   ├── fragment_profile.xml
+│       │       │   ├── fragment_recommend.xml
+│       │       │   ├── fragment_register.xml
+│       │       │   ├── fragment_search.xml
+│       │       │   ├── fragment_select_paddle.xml
+│       │       │   ├── fragment_tablist.xml
+│       │       │   ├── fragment_topbar.xml
+│       │       │   ├── fragment_userpage.xml
+│       │       │   ├── fragment_video.xml
+│       │       │   ├── item_comment.xml
+│       │       │   ├── news_double_image.xml
+│       │       │   ├── news_single_image.xml
+│       │       │   ├── news_without_image.xml
+│       │       │   ├── newsreading_single_image.xml
+│       │       │   ├── subject_box_selected.xml
+│       │       │   └── subject_box_unselected.xml
+│       │       ├── menu
+│       │       │   └── bottom_nav_menu.xml
+│       │       ├── mipmap-anydpi
+│       │       ├── mipmap-anydpi-v26
+│       │       │   ├── login_background.xml
+│       │       │   ├── login_background_round.xml
+│       │       │   ├── new_ic_launcher_round.xml
+│       │       │   └── new_ic_launcher_square.xml
+│       │       ├── mipmap-hdpi
+│       │       │   ├── login_background.webp
+│       │       │   ├── login_background_round.webp
+│       │       │   ├── login_bg_graph.webp
+│       │       │   ├── new_ic_launcher_round.webp
+│       │       │   └── new_ic_launcher_square.webp
+│       │       ├── mipmap-mdpi
+│       │       │   ├── login_background.webp
+│       │       │   ├── login_background_round.webp
+│       │       │   ├── login_bg_graph.webp
+│       │       │   ├── new_ic_launcher_round.webp
+│       │       │   └── new_ic_launcher_square.webp
+│       │       ├── mipmap-xhdpi
+│       │       │   ├── login_background.webp
+│       │       │   ├── login_background_round.webp
+│       │       │   ├── login_bg_graph.webp
+│       │       │   ├── new_ic_launcher_round.webp
+│       │       │   └── new_ic_launcher_square.webp
+│       │       ├── mipmap-xxhdpi
+│       │       │   ├── login_background.webp
+│       │       │   ├── login_background_round.webp
+│       │       │   ├── login_bg_graph.webp
+│       │       │   ├── new_ic_launcher_round.webp
+│       │       │   └── new_ic_launcher_square.webp
+│       │       ├── mipmap-xxxhdpi
+│       │       │   ├── login_background.webp
+│       │       │   ├── login_background_round.webp
+│       │       │   ├── login_bg_graph.webp
+│       │       │   ├── new_ic_launcher_round.webp
+│       │       │   └── new_ic_launcher_square.webp
+│       │       ├── navigation
+│       │       │   └── mobile_navigation.xml
+│       │       ├── values
+│       │       │   ├── colors.xml
+│       │       │   ├── dimens.xml
+│       │       │   ├── strings.xml
+│       │       │   ├── styles.xml
+│       │       │   └── themes.xml
+│       │       ├── values-night
+│       │       │   └── themes.xml
+│       │       └── xml
+│       │           ├── backup_rules.xml
+│       │           ├── data_extraction_rules.xml
+│       │           └── network_permission_config.xml
+├── build.gradle
+├── gradle.properties
+├── settings.gradle
+

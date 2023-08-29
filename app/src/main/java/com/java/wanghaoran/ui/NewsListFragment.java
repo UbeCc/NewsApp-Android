@@ -20,7 +20,7 @@ import com.java.wanghaoran.R;
 import com.java.wanghaoran.Utils;
 import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.service.TaskRunner;
+import com.java.wanghaoran.service.HttpManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class NewsListFragment extends Fragment {
     private List<News> newsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private NewsListAdapter listAdapter;
-    private EndlessRecyclerViewScrollListener listScrollListener;
+    private RecyclerViewScrollListener listScrollListener;
     private Context context;
     private ProgressBar loadingBar;
     private SwipeRefreshLayout listContainer;
@@ -64,7 +64,7 @@ public class NewsListFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(llm);
         // 上划加载更多功能，这里调用了EndlessRecycleViewScrollListener
-        listScrollListener = new EndlessRecyclerViewScrollListener(llm, (page, totalItemsCount, view1) -> loadNextPage());
+        listScrollListener = new RecyclerViewScrollListener(llm, (page, totalItemsCount, view1) -> loadNextPage());
         recyclerView.addOnScrollListener(listScrollListener);
 
         listAdapter = new NewsListAdapter(this, context, newsList);
@@ -106,13 +106,13 @@ public class NewsListFragment extends Fragment {
     }
 
     // 声明：本逻辑非原创
-    public class NewsFetchCallback implements TaskRunner.Callback<List<News>> {
+    public class NewsFetchCallback implements HttpManager.Callback<List<News>> {
         private final boolean reload;
 
         public NewsFetchCallback(boolean reload) {this.reload = reload;}
 
         @Override
-        public void complete(TaskRunner.Result<List<News>> res) {
+        public void complete(HttpManager.Result<List<News>> res) {
             Log.d("NewsList", "complete executed " + reload + " " + res.isOk() + " " + res.getResult().toString());
 //            和前面setVisibility(View.VISIBLE)对应
             loadingBar.setVisibility(View.GONE);

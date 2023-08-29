@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.IntStream;
 
 /**
  * @params visibleThreshold 启动新加载需要的最小数量
@@ -18,7 +16,7 @@ import java.util.stream.IntStream;
  * @params onLoadMore 加载更多的回调
  * @params mLayoutManager 布局管理器
  */
-public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+public class RecyclerViewScrollListener extends RecyclerView.OnScrollListener {
 
     private int visibleThreshold = 5;
     private int currentPage = 0;
@@ -33,18 +31,18 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
         void onLoadMore(int page, int totalItemsCount, RecyclerView view);
     }
 
-    public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {
+    public RecyclerViewScrollListener(LinearLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {
         this.mLayoutManager = layoutManager;
         this.onLoadMore = onLoadMore;
     }
 
-    public EndlessRecyclerViewScrollListener(GridLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {
+    public RecyclerViewScrollListener(GridLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {
         this.mLayoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
         this.onLoadMore = onLoadMore;
     }
 
-    public EndlessRecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {//这个函数来自2022年科协暑培的代码
+    public RecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager, OnLoadMoreListener onLoadMore) {//这个函数来自2022年科协暑培的代码
         this.mLayoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
         this.onLoadMore = onLoadMore;

@@ -16,12 +16,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
 import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.service.PictureManager;
 import com.java.wanghaoran.Utils;
 
 public class NewsDetailFragment extends Fragment {
@@ -97,16 +97,16 @@ public class NewsDetailFragment extends Fragment {
         }
 
         // 最多容纳四张照片，这里没有搞SwipeRefreshLayout。因为据观察一条新闻最多四张照片
-        if(newsToShow.getImages().length >= 1 ) PictureManager.loadPictureWithoutPlaceHolder(
-                context,newsToShow.getImages()[0], newsImage1);
+        if(newsToShow.getImages().length >= 1 ) loadPictureWithoutPlaceHolder(
+                context,newsToShow.getImages()[0],newsImage1);
         else newsImage1.setVisibility(View.GONE);
-        if(newsToShow.getImages().length >= 2 ) PictureManager.loadPictureWithoutPlaceHolder(
+        if(newsToShow.getImages().length >= 2 ) loadPictureWithoutPlaceHolder(
                 context,newsToShow.getImages()[1],newsImage2);
         else newsImage2.setVisibility(View.GONE);
-        if(newsToShow.getImages().length >= 3 ) PictureManager.loadPictureWithoutPlaceHolder(
+        if(newsToShow.getImages().length >= 3 ) loadPictureWithoutPlaceHolder(
                 context,newsToShow.getImages()[2],newsImage3);
         else newsImage3.setVisibility(View.GONE);
-        if(newsToShow.getImages().length >= 4 ) PictureManager.loadPictureWithoutPlaceHolder(
+        if(newsToShow.getImages().length >= 4 ) loadPictureWithoutPlaceHolder(
                 context,newsToShow.getImages()[3],newsImage4);
         else newsImage4.setVisibility(View.GONE);
 
@@ -136,4 +136,9 @@ public class NewsDetailFragment extends Fragment {
             MainApplication.getTopFragmentContainer().setVisibility(View.VISIBLE);
         }
     }
+
+    private static void loadPictureWithoutPlaceHolder(Context context, String url, ImageView picture) {
+        Glide.with(context).asBitmap().error(R.drawable.news_placeholder).load(url).into(picture);
+    }
+
 }

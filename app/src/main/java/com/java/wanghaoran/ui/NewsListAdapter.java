@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import com.bumptech.glide.Glide;
 import com.java.wanghaoran.MainApplication;
 import com.java.wanghaoran.R;
 import com.java.wanghaoran.Utils;
 import com.java.wanghaoran.containers.News;
 import com.java.wanghaoran.service.NewsManager;
-import com.java.wanghaoran.service.PictureManager;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
     private final Fragment fragment;
@@ -110,10 +110,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             this.description.setText(description);
 
             if(type != 0) { // 至少有一张图片
-                PictureManager.loadPictureWithPlaceHolder(mainActivity, news.getImages()[0], picture1);
+                loadPictureWithPlaceHolder(mainActivity, news.getImages()[0], picture1);
             }
             if(type >= 2) { // 有两张图片
-                PictureManager.loadPictureWithPlaceHolder(mainActivity, news.getImages()[1], picture2);
+                loadPictureWithPlaceHolder(mainActivity, news.getImages()[1], picture2);
             }
 
             itemView.setOnClickListener(v -> {
@@ -127,4 +127,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             });
         }
     }
+
+    private static void loadPictureWithPlaceHolder(Context context, String url, ImageView picture) {
+        Glide.with(context).asBitmap().error(R.drawable.news_placeholder)
+                .placeholder(R.drawable.ic_loading).load(url).into(picture);
+    }
+
 }
