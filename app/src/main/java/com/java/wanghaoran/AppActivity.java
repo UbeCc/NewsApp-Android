@@ -36,6 +36,8 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
     private long exitTime = 0;
     private ActivityMainBinding binding;
     public BottomNavigationView navView;
+    long firstTime = 0;
+
     public SearchView searchView;
     public FragmentContainerView mainArea;
     public FragmentContainerView tabs;
@@ -175,7 +177,30 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(MainApplication.newsPageisSearchingPage) {
+            Log.d("Logger", "back to search");
+            MainApplication.newsPageisSearchingPage = false;
+            MainApplication.newsPage = false;
+            MainApplication.searchPage = true;
+            super.onBackPressed();
+        } if(MainApplication.newsDetailPage) {
+            Log.d("Logger", "back to newslist");
+            MainApplication.newsDetailPage = false;
+            MainApplication.newsPage = true;
+            MainApplication.searchPage = false;
+            MainApplication.userPage = false;
+            super.onBackPressed();
+        }
+        else {
+            long secondTime = System.currentTimeMillis();
+            if(secondTime - firstTime >= 1000) {
+                Utils.makeToast(AppActivity.this, "再按一次退出应用");
+                firstTime = secondTime;
+            } else {
+                finish();
+                System.exit(0);
+            }
+        }
 //        Intent home = new Intent(Intent.ACTION_MAIN);
 //        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        home.addCategory(Intent.CATEGORY_HOME);
