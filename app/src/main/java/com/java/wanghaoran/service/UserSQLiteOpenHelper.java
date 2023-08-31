@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class UserSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "userdb";
@@ -50,12 +51,13 @@ public class UserSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     public int checkLoginCredentials(String username, String password) {
+        Log.d("Login", "`checker` executed");
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor1 = db.query(DATABASE_NAME, null, "username=?", new String[]{username}, null, null, null);
         Cursor cursor2 = db.query(DATABASE_NAME, null, "username=? AND password=?", new String[]{username, password}, null, null, null);
 
         boolean hasUsername = cursor1.getCount() > 0;
-        boolean passwdMatch = cursor1.getCount() > 0;
+        boolean passwdMatch = cursor2.getCount() > 0;
 
         cursor1.close();
         cursor2.close();

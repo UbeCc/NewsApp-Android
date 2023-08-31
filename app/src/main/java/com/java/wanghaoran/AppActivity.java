@@ -198,7 +198,6 @@ public class AppActivity extends AppCompatActivity  implements TabListFragment.o
                 firstTime = secondTime;
             } else {
                 finish();
-                System.exit(0);
             }
         }
 //        Intent home = new Intent(Intent.ACTION_MAIN);

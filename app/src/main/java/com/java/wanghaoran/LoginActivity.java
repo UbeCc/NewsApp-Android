@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity{
                 } else if(result == 2) {
                     Utils.makeToast(LoginActivity.this, "用户名密码不匹配，请您再尝试");
                 }
-                else {
+                else if(result == 0) {
                     Utils.makeToast(LoginActivity.this, "登陆成功");
                     Log.d("Logger", "Login: " + username);
                     MainApplication.username = username;
