@@ -23,8 +23,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="【原神】1.7版本新角色：雷神"
+                    android:textStyle="bold"
+                    android:layout_marginTop="3dp"
                     android:textColor="@color/black"
-                    android:textSize="24dp"
+                    android:textSize="25dp"
                     app:layout_constraintBottom_toTopOf="@+id/detail_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:textStyle="bold"
                     android:text="米哈游  2023-08-27 16:26:34"
                     android:textColor="@color/grey"
                     android:textSize="15dp"
@@ -148,8 +151,8 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:backgroundTint="#123456"
-            app:tint="@color/black"
+            app:backgroundTint="@color/grey"
+            app:tint="@color/grey"
             app:srcCompat="@android:drawable/btn_star_big_off" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -161,8 +164,8 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:backgroundTint="#123456"
-            app:tint="#FFEB3B"
+            app:backgroundTint="#ff0000"
+            app:tint="#ffff00"
             app:srcCompat="@android:drawable/btn_star_big_off" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

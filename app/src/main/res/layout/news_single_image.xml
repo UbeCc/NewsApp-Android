@@ -33,19 +33,22 @@
                 <TextView
                     android:id="@+id/news_one_pic_title"
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:text="原神"
+                    android:textStyle="bold"
                     android:textColor="@color/title_text_color"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
                 <TextView
                     android:id="@+id/news_one_pic_description"
                     android:layout_width="wrap_content"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:text="启动"
                     android:textColor="#999999"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
             </RelativeLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"

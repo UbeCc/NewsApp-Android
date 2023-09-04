@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +121,16 @@ public class SelectPaddleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_paddle, container, false);
         selected_grid_view = view.findViewById(R.id.selected);
         unselected_grid_view = view.findViewById(R.id.unselected);
+//        selected_grid_view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                listener.onChangeSelect(position, true);
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {}
+//        });
         selected_adapter = new SelectPaddleAdapter(listener ,selected, this.getContext(),true);
         unselected_adapter = new SelectPaddleAdapter(listener,unselected, this.getContext(),false);
         selected_grid_view.setAdapter(selected_adapter);

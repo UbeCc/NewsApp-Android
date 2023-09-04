@@ -27,9 +27,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:text="12345454654654656"
+                android:layout_marginTop="3dp"
+                android:text="原批"
                 android:textColor="@color/title_text_color"
-                android:textSize="20sp" />
+                android:textStyle="bold"
+                android:textSize="25sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -39,10 +41,11 @@
                 android:id="@+id/news_no_pic_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textColor="#999999"
                 android:layout_alignParentBottom="true"
                 android:text="bottom"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

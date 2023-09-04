@@ -22,18 +22,20 @@
             android:id="@+id/news_two_pic_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
             android:text="原神"
             android:textColor="@color/title_text_color"
-            android:textSize="20sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/news_two_pic_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="启动！"
             android:textColor="#999999"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

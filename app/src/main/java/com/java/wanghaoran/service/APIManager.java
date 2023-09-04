@@ -2,9 +2,7 @@ package com.java.wanghaoran.service;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.java.wanghaoran.containers.News;
-import com.java.wanghaoran.containers.NewsResponse;
 import com.java.wanghaoran.Utils;
 
 import java.time.LocalDate;
@@ -12,9 +10,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public final class APIManager {
     private final static APIManager instance = new APIManager();
@@ -112,41 +113,54 @@ public final class APIManager {
     }
 
     /**
-     * 通过OkHTTP获取新闻，并存在APIManager类的newsFetched中
+     * 通过JsonObject+URLConnect获取新闻，并存在APIManager类的newsFetched中
      * @param page 希望读取的页码
      */
     public void execute(int page) {
-//      Log.d("Result", keyWords + " " + startTime + " " + endTime + " " + categories);
-        String rawUrl = "https://api2.newsminer.net/svc/news/queryNewsList?size=10&startDate="
-                + startTime + "&endDate=" + endTime + "&words="+ keyWords + "&categories=" + categories;
-        String url = rawUrl + "&page=" + page;
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
         try {
-            Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            Gson gson = new Gson();
-            NewsResponse newsResponse = gson.fromJson(responseBody, NewsResponse.class);
-            Log.d("API", "Successful response");
-            if(newsResponse != null) {
-                List<NewsResponse.NewsContent> data = newsResponse.data;
-                if (!data.isEmpty()) {
+            String rawUrl = "https://api2.newsminer.net/svc/news/queryNewsList?size=15&startDate="
+                    + startTime + "&endDate=" + endTime + "&words="+ keyWords + "&categories=" + categories;
+            String url = rawUrl + "&page=" + page;
+            // 创建 URL 对象
+            URL apiUrl = new URL(url);
+            // 打开连接
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+            connection.setRequestMethod("GET");
+            // 获取响应码
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // 读取响应数据
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+                // 解析 JSON 响应
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                if (jsonResponse.has("data")) {
+                    JSONArray jsonDataArray = jsonResponse.getJSONArray("data");
+                    // 清空newsFetched
                     newsFetched.clear();
-                    int newsSize = data.size();
-                    Log.d("Result", "QWQ");
-                    for (int i = 0; i < newsSize; i++) {
-                        String rawTitle = data.get(i).title;
+                    for (int i = 0; i < jsonDataArray.length(); i++) {
+                        JSONObject newsObject = jsonDataArray.getJSONObject(i);
+                        String rawTitle = newsObject.getString("title");
                         String title = rawTitle.split("[\n|\r]")[0];
-                        News tempNews = Utils.initNews(title, data.get(i).content, data.get(i).url,
-                                data.get(i).publisher, data.get(i).publishTime, data.get(i).newsID,
-                                data.get(i).image, data.get(i).video);
+                        News tempNews = Utils.initNews(title, newsObject.getString("content"), newsObject.getString("url"),
+                                newsObject.getString("publisher"), newsObject.getString("publishTime"),
+                                newsObject.getString("newsID"), newsObject.getString("image"), newsObject.getString("video"));
                         newsFetched.add(tempNews);
                     }
+                } else {
+                    Log.d("Result", "no data in response");
                 }
             } else {
-                Log.d("Result", "no response");
+                Log.d("Result", "HTTP Error: " + responseCode);
             }
-        }  catch (Exception e){
+            // 关闭连接
+            connection.disconnect();
+        } catch (Exception e) {
             Log.d("NewsList", "Other Error" + e.toString());
         }
     }
