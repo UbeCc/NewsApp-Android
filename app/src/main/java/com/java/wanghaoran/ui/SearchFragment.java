@@ -1,10 +1,14 @@
 package com.java.wanghaoran.ui;
 
+import static com.java.wanghaoran.Utils.makeToast;
 import static com.java.wanghaoran.Utils.replaceFragment;
 import static com.java.wanghaoran.ui.NewsListFragment.newsListFragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
@@ -15,13 +19,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.java.wanghaoran.MainActivity;
@@ -39,8 +47,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private Spinner spinnerView;
     private TextView spinnerText;
     private ArrayAdapter<String> spinnerAdapter;
-    private EditText startTime, endTime;
-    private Button searchButton;
+    private TextView startTime, endTime, startDate, endDate;
+    private Button startDateButton;
+    private Button startTimeButton;
+    private Button endDateButton;
+    private Button endTimeButton;
+    private DatePickerDialog startDateDialog;
+    private DatePickerDialog endDateDialog;
+    private TimePickerDialog startTimeDialog;
+    private TimePickerDialog endTimeDialog;
+    private int startYear, startMonthOfYear, startDayOfMonth, startHourOfDay, startMinute;
+    private int endYear, endMonthOfYear, endDayOfMonth, endHourOfDay, endMinute;
     private String queryText = "";
     private OnSearchInputFinished mListener;
     String mCategory;
@@ -114,11 +131,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         Log.d("SearchFragment", "onLowMemory");
     }
     @Override
-    public void onAttachFragment(Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-        Log.d("SearchFragment", "onAttachFragment");
-    }
-    @Override
     public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(context, attrs, savedInstanceState);
         Log.d("SearchFragment", "onInflate");
@@ -150,9 +162,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         if (queryText == "综合") queryText = "";
         List<String> catagories = new ArrayList<>();
         catagories.add(mCategory);
-        String begin_time = Utils.prettifyDateExpression(startTime.getText().toString());
-        String end_time = Utils.prettifyDateExpression(endTime.getText().toString());
-//        Log.d("SearchFragment", queryText + catagories + begin_time + end_time);
+        String begin_time = Utils.prettifyDateExpression(startDate.getText().toString());
+        String end_time = Utils.prettifyDateExpression(endDate.getText().toString());
+        Log.d("SearchFragment", queryText + catagories + begin_time + end_time);
         APIManager.getInstance().setParams(catagories, begin_time, end_time, queryText);
         NewsListFragment.getInstanceForSearch().reloadNewsForSearch();
         mListener.finished();
@@ -166,7 +178,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         spinnerText = view.findViewById(R.id.text1);
         spinnerView = view.findViewById(R.id.selections);
 //         避免默认选择第一项
-        spinnerView.setSelection(0,true);
+        spinnerView.setSelection(0, true);
         spinnerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, list);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerView.setAdapter(spinnerAdapter);
@@ -199,14 +211,90 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         });
 
         searchView = view.findViewById(R.id.searchBar);
-        startTime = view.findViewById(R.id.editTextDateStart);
-        endTime = view.findViewById(R.id.editTextDateEnd);
-        searchButton = view.findViewById(R.id.ssearch_button);
+        startDate = view.findViewById(R.id.startDate);
+        startTime = view.findViewById(R.id.startTime);
+        endDate = view.findViewById(R.id.endDate);
+        endTime = view.findViewById(R.id.endTime);
+        Button searchButton = view.findViewById(R.id.ssearch_button);
         searchView.setOnQueryTextListener(this);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getInformation();
+            }
+        });
+        startDateButton = view.findViewById(R.id.start_date_button);
+        startTimeButton = view.findViewById(R.id.start_time_button);
+        endDateButton = view.findViewById(R.id.end_date_button);
+        endTimeButton = view.findViewById(R.id.end_time_button);
+        Calendar startCalendar = Calendar.getInstance();
+        startYear = startCalendar.get(startCalendar.YEAR);
+        startMonthOfYear = startCalendar.get(startCalendar.MONTH);
+        startDayOfMonth = startCalendar.get(startCalendar.DAY_OF_MONTH);
+        startHourOfDay = startCalendar.get(startCalendar.HOUR_OF_DAY);
+        startMinute = startCalendar.get(startCalendar.MINUTE);
+        startDateDialog = new DatePickerDialog(this.getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker arg0, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                String text = String.format("%04d年%02d月%02d日", year, monthOfYear + 1, dayOfMonth);
+                startDate.setText("您选择的起始日期是：" + text);
+            }
+        }, startYear, startMonthOfYear, startDayOfMonth);
+        startDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDateDialog.show();
+            }
+        });
+        startTimeDialog = new TimePickerDialog(this.getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(android.widget.TimePicker arg0, int hourOfDay, int minute) {
+                String text = String.format("%02d点%02d分", hourOfDay, minute);
+                startTime.setText("您选择的起始时间是：" + text);
+            }
+        }, startHourOfDay, startMinute, true);
+        startTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 点击时间选择器按钮时显示出时间对话框
+                startTimeDialog.show();
+            }
+        });
+
+        // End
+        Calendar endCalendar = Calendar.getInstance();
+        endYear = endCalendar.get(endCalendar.YEAR);
+        endMonthOfYear = endCalendar.get(endCalendar.MONTH);
+        endDayOfMonth = endCalendar.get(endCalendar.DAY_OF_MONTH);
+        endHourOfDay = endCalendar.get(endCalendar.HOUR_OF_DAY);
+        endMinute = endCalendar.get(endCalendar.MINUTE);
+        endDateDialog = new DatePickerDialog(this.getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker arg0, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                String text = String.format("%04d年%02d月%02d日", year, monthOfYear + 1, dayOfMonth);
+                endDate.setText("您选择的结束日期是：" + text);
+            }
+        }, endYear, endMonthOfYear, endDayOfMonth);
+        endDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endDateDialog.show();
+            }
+        });
+        endTimeDialog = new TimePickerDialog(this.getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(android.widget.TimePicker arg0, int hourOfDay, int minute) {
+                String text = String.format("%02d点%02d分", hourOfDay, minute);
+                endTime.setText("您选择的结束时间是：" + text);
+            }
+        }, endHourOfDay, endMinute, true);
+        endTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // 点击时间选择器按钮时显示出时间对话框
+                endTimeDialog.show();
             }
         });
         return view;
